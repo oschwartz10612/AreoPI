@@ -1,3 +1,97 @@
+function dashboard() {
+  var heading = document.getElementById('heading');
+  heading.innerHTML = 'Dashboard';
+  var content = document.getElementById('content');
+  content.innerHTML = '<canvas id="myPH" width="300" height="150"></canvas><canvas id="myEC" width="300" height="150"></canvas><canvas id="myTemps" width="300" height="150"></canvas>';
+  var ctx = document.getElementById("myPH");
+  var data1 = [];
+  var myPH = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [""],
+      datasets: [{
+        label: 'PH value',
+        data: data1,
+        fill: false,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
+  var ctx = document.getElementById("myEC");
+  var myEC = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [""],
+      datasets: [{
+        label: 'EC value',
+        data: data1,
+        fill: false,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
+  var ctx = document.getElementById("myTemps");
+  var myTemps = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [""],
+      datasets: [{
+        label: 'Tempatures',
+        data: data1,
+        fill: false,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+}
+
 function changePH() {
   var heading = document.getElementById('heading');
   heading.innerHTML = 'PH';
