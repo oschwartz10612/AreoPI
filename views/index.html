@@ -63,6 +63,7 @@
           <a href="#" class="list-group-item" onclick="changePH()">PH</a>
           <a href="#" class="list-group-item" onclick="changeEC()">EC</a>
           <a href="#" class="list-group-item" onclick="viewTemp()">Tempature</a>
+          <a href="#" class="list-group-item" onclick="viewWater()">Water Levals</a>
 
           <div class="well" id="growthSeason">
             <div class="growthHeading">
@@ -94,6 +95,12 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <div class="well">
+          <h3>Sprayer Status</h3>
+          <div class="alert alert-success" role="alert">Sprayer <span id="dashboardOnOff">On</span></div>
+          <p><button type="button" name="button" class="btn main-color">Turn on</button> <span id="timeUntil">Next spray: 5:00</span></p>
         </div>
       </div>
       <div class="col-md-9">
