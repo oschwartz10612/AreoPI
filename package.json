@@ -1,7 +1,7 @@
 {
   "name": "areopi",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Raspberry Pi based web application to make controing your areoponics or hydroponics system easer.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
