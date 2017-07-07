@@ -64,7 +64,7 @@ function addPH(e) {
 
 function changeEC() {
   var heading = document.getElementById('heading');
-  heading.innerHTML = 'PH';
+  heading.innerHTML = 'PPM and Nutrents';
   var content = document.getElementById('content');
   content.innerHTML = `
                         <canvas id="myChart" width="300" height="150"></canvas>
@@ -132,7 +132,7 @@ function addEC(e) {
 
 function viewTemp() {
   var heading = document.getElementById('heading');
-  heading.innerHTML = 'PH';
+  heading.innerHTML = 'Tempatures';
   var content = document.getElementById('content');
   content.innerHTML = '<canvas id="myChart" width="300" height="150"></canvas>';
   var data1 = [];
