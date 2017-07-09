@@ -12,6 +12,10 @@ app.use('/icon', express.static(__dirname + '/views/'));
 app.use('/style', express.static(__dirname + '/views/'));
 app.use('/main', express.static(__dirname + '/'));
 
+//This is just a test
+app.get('/api', function(req, res) {
+  res.send('{"state": "false"}');
+});
 
 app.get('/', function(req, res) {
   res.render('index.html');

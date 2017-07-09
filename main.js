@@ -116,7 +116,7 @@ function changePH() {
                               <div class="input-group-addon">ml</div>
                             </div>
                           </div>
-                          <button type="submit" class="btn btn-primary">Add</button>
+                          <button type="submit" class="btn main-color" id="addButton">Add</button>
                           <div id="phAlert" class="input-group"></div>
                         </form>
                       `;
@@ -174,14 +174,14 @@ function changeEC() {
                           <div class="form-group">
                             <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                             <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-tint" aria-hidden="true"></span></div>
-                                <input type="text" class="form-control" id="growAmount" placeholder="Grow Amount">
-                                <input type="text" class="form-control" id="floraAmount" placeholder="Flora Amount">
-                                <input type="text" class="form-control" id="bloomAmount" placeholder=" Bloom Amount">
+                              <div class="input-group-addon" id="nutrentDiv"><span class="glyphicon glyphicon-tint" aria-hidden="true"></span></div>
+                                <input type="text" class="form-control" id="growAmount" placeholder="Grow">
+                                <input type="text" class="form-control" id="floraAmount" placeholder="Flora">
+                                <input type="text" class="form-control" id="bloomAmount" placeholder="Bloom">
                               <div class="input-group-addon">ml</div>
                             </div>
                           </div>
-                          <button type="submit" class="btn btn-primary">Add</button>
+                          <button type="submit" class="btn main-color">Add</button>
                           <div id="ecAlert" class="input-group"></div>
                         </form>
                       `;
@@ -285,7 +285,7 @@ function viewWater() {
                           </div>
                         </div>
                         <canvas id="myChart" width="300" height="150"></canvas>
-                        <button type="button" name="button" class="btn main-color"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Manage Notifcations</button>`;
+                        <button type="button" name="button" class="btn main-color" id="manageNotifcations"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Manage Notifcations</button>`;
   var data1 = [];
   var ctx = document.getElementById("myChart");
   var myChart = new Chart(ctx, {

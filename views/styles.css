@@ -96,6 +96,19 @@ header p {
 #timeUntil {
    margin-left: 15px;
 }
+#manageNotifcations {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+#growAmount {
+  width: 75px;
+}
+#bloomAmount {
+  width: 75px;
+}
+#floraAmount {
+  width: 75px;
+}
 
 @media (max-width: 767px) {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
