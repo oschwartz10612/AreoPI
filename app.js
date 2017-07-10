@@ -13,16 +13,9 @@ app.use('/style', express.static(__dirname + '/views/'));
 app.use('/main', express.static(__dirname + '/'));
 
 //This is just a test
-app.get('/api', function(req, res) {
-  res.send('{"state": "false"}');
-});
 
 app.get('/', function(req, res) {
   res.render('index.html');
-});
-
-app.get('/monitor', function(req, res) {
-  res.render('monitor.html');
 });
 
 app.get('/settings', function(req, res) {

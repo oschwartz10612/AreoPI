@@ -7,8 +7,10 @@ function dashboard() {
   content.innerHTML = `
                         <h3 class="text-center">Ph Values</h3>
                         <canvas id="myPH" width="200" height="100"></canvas>
+                        <hr>
                         <h3 class="text-center">EC Values</h3>
                         <canvas id="myEC" width="200" height="100"></canvas>
+                        <hr>
                         <h3 class="text-center">Tempatures</h3>
                         <canvas id="myTemps" width="200" height="100"></canvas>`;
   var ctx = document.getElementById("myPH");
@@ -157,7 +159,7 @@ function addPH(e) {
   if (e.preventDefault) e.preventDefault();
   var phAmount = document.getElementById('phAmount')
   if (phAmount.value != '' && parseInt(phAmount.value)) {
-    document.getElementById('phAlert').innerHTML = '<div class="alert alert-success" id="formAlert" role="alert"><bold>Sucsess!</bold>' + phAmount.value + 'ml of PH up added.</div>';
+    document.getElementById('phAlert').innerHTML = '<div class="alert alert-success" id="formAlert" role="alert"><strong>Sucsess!</strong>' + phAmount.value + 'ml of PH up added.</div>';
   } else {
     alert("Please enter a valid PH amount");
   }
@@ -224,7 +226,7 @@ function addEC(e) {
   var bloomAmount = document.getElementById('bloomAmount');
   var growAmount = document.getElementById('growAmount');
   if (parseInt(floraAmount.value) >= 0 && parseInt(bloomAmount.value) >= 0 && parseInt(floraAmount.value) >= 0) {
-    document.getElementById('ecAlert').innerHTML = '<div class="alert alert-success" id="formAlert" role="alert"><bold>Sucsess!</bold> ' + floraAmount.value + 'ml of Flora added, ' + growAmount.value + 'ml of Grow added, and ' + bloomAmount.value + 'ml of Bloom added.</div>';
+    document.getElementById('ecAlert').innerHTML = '<div class="alert alert-success" id="formAlert" role="alert"><strong>Sucsess!</strong> ' + floraAmount.value + 'ml of Flora added, ' + growAmount.value + 'ml of Grow added, and ' + bloomAmount.value + 'ml of Bloom added.</div>';
   } else {
     alert("Please enter a valid nutrent amount");
   }
@@ -291,48 +293,127 @@ function viewWater() {
   var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        datasets: [{
-            data: [20, 50, 100, 75, 25, 0],
-            label: 'Tank One',
+      datasets: [{
+        data: [20, 50, 100, 75, 25, 0],
+        label: 'Tank One',
 
-            // This binds the dataset to the left y axis
-            yAxisID: 'left-y-axis',
-            backgroundColor: [
-              '#1B4965',
-            ],
-            borderColor: [
-              '#133549',
-            ],
-            fill: false
-        }, {
-            data: [0.1, 0.5, 1.0, 2.0, 1.5, 0],
-            label: 'Tank Two',
+        // This binds the dataset to the left y axis
+        yAxisID: 'left-y-axis',
+        backgroundColor: [
+          '#1B4965',
+        ],
+        borderColor: [
+          '#133549',
+        ],
+        fill: false
+      }, {
+        data: [0.1, 0.5, 1.0, 2.0, 1.5, 0],
+        label: 'Tank Two',
 
-            // This binds the dataset to the right y axis
-            yAxisID: 'right-y-axis',
+        // This binds the dataset to the right y axis
+        yAxisID: 'right-y-axis',
 
-            backgroundColor: [
-              '#42CAFD',
-            ],
-            borderColor: [
-              '#236E89',
-            ],
-            fill: false
-        }],
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+        backgroundColor: [
+          '#42CAFD',
+        ],
+        borderColor: [
+          '#236E89',
+        ],
+        fill: false
+      }],
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
     },
     options: {
-        scales: {
-            yAxes: [{
-                id: 'left-y-axis',
-                type: 'linear',
-                position: 'left'
-            }, {
-                id: 'right-y-axis',
-                type: 'linear',
-                position: 'right'
-            }]
-        }
+      scales: {
+        yAxes: [{
+          id: 'left-y-axis',
+          type: 'linear',
+          position: 'left'
+        }, {
+          id: 'right-y-axis',
+          type: 'linear',
+          position: 'right'
+        }]
+      }
     }
   });
+}
+
+// settings:
+function notifcations() {
+  var heading = document.getElementById('settingsHeading');
+  heading.innerHTML = 'Notifcations';
+  var content = document.getElementById('settingsContent');
+  content.innerHTML = `
+                      <h3>Current Information:</h3>
+                      <p id="name">Name: Jon Doe</p>
+                      <p id="email">Email: not@set.com</p>
+                      <hr>
+                      <h3>Notifcation Email and Name</h3>
+                      <p>Please enter an email address to recive notifications from your system</p>
+                      <form class="form" action="/" method="post">
+                        <div class="form-group">
+                          <label for="name">Name</label>
+                          <input type="text" class="form-control" id="name" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                          <label for="email">Email</label>
+                          <input type="email" class="form-control" id="email" placeholder="Email Address">
+                        </div>
+                        <button type="submit" class="btn btn-default main-color">Update Information</button>
+                      </form>
+                      <hr>
+                      <h3>Revive notifcations about:</h3>
+
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" value="" id="waterLevals1">
+                        Water levals in tank 1
+                      </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="" id="waterLevals2">
+                          Water levals in tank 2
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="" id="temps">
+                          High tempature levals
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="" id="ph">
+                          High PH
+                        </label>
+                      </div>
+                      <button type="button" name="button" class="btn main-color" id="submit">Submit</button>
+                      `;
+}
+
+function wifi() {
+  var heading = document.getElementById('settingsHeading');
+  heading.innerHTML = 'Wifi Network';
+  var content = document.getElementById('settingsContent');
+  content.innerHTML = `
+                      <h3>Current Information:</h3>
+                      <p id="name">SSID: Jon Doe</p>
+                      <hr>
+                      <h3>Wifi SSID and password</h3>
+                      <p>Please enter you new network SSID and password.</p>
+                      <div class="alert alert-warning" role="alert"><strong>Please Note:</strong> This is intended to update your network information. Upon clicking submit, your pi's network will change.</div>
+                      <form class="form" action="/" method="post">
+                        <div class="form-group">
+                          <label for="ssid">SSID</label>
+                          <input type="text" class="form-control" id="ssid" placeholder="SSID">
+                        </div>
+                        <div class="form-group">
+                          <label for="password">Password</label>
+                          <input type="password" class="form-control" id="password" placeholder="Password">
+                        </div>
+                        <button type="submit" class="btn btn-default main-color">Update Network Info</button>
+                      </form>
+                      `;
 }
