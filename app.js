@@ -29,6 +29,6 @@ app.get('/settings', function(req, res) {
   res.render('settings.html');
 });
 
-app.listen(80, function() {
-  console.log('Listening on port 80!');
+app.listen(4000, function() {
+  console.log('Listening on port 4000!');
 });
