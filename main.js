@@ -417,3 +417,43 @@ function wifi() {
                       </form>
                       `;
 }
+
+function timing() {
+  var heading = document.getElementById('settingsHeading');
+  heading.innerHTML = 'Wifi Network';
+  var content = document.getElementById('settingsContent');
+  content.innerHTML = `
+                      <h3>Current Information:</h3>
+                      <p id="currentInfo">Spray every <strong>5</strong> minutes</p>
+                      <hr>
+                      <h3>Options:</h3>
+                      <form class="" action="#" method="post">
+                        <h5>Presets:</h5>
+                        <div class="form-group">
+                          <label>Every five minutes</label>
+                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
+                        </div>
+                        <div class="form-group">
+                          <label>Every ten minutes</label>
+                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
+                        </div>
+                        <div class="form-group">
+                          <label>Every morning</label>
+                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
+                        </div>
+                        <div class="form-group">
+                          <label>Every night</label>
+                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
+                        </div>
+                        <div class="form-group">
+                          <label>Morning and night</label>
+                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
+                        </div>
+                        <div class="form-group">
+                          <label>24/7</label>
+                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
+                        </div>
+                        <button type="submit" name="button" class="btn main-color">Save</button>
+                      </form>
+                      `;
+}
