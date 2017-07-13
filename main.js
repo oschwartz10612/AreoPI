@@ -1,4 +1,15 @@
-window.onload = dashboard();
+window.onload = load();
+
+function load() {
+  var path = window.location.pathname;
+  var page = path.split("/").pop();
+  if (page == 'settings') {
+    timing();
+  }
+  if (page == '') {
+    dashboard();
+  }
+}
 
 function dashboard() {
   var heading = document.getElementById('heading');
@@ -363,7 +374,7 @@ function notifcations() {
                         <button type="submit" class="btn btn-default main-color">Update Information</button>
                       </form>
                       <hr>
-                      <h3>Revive notifcations about:</h3>
+                      <h3>Recive notifcations about:</h3>
 
                       <div class="checkbox">
                       <label>
@@ -387,6 +398,18 @@ function notifcations() {
                         <label>
                           <input type="checkbox" value="" id="ph">
                           High PH
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="" id="ph">
+                          Despensing
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="" id="ph">
+                          Groth Season
                         </label>
                       </div>
                       <button type="button" name="button" class="btn main-color" id="submit">Submit</button>
@@ -424,36 +447,66 @@ function timing() {
   var content = document.getElementById('settingsContent');
   content.innerHTML = `
                       <h3>Current Information:</h3>
-                      <p id="currentInfo">Spray every <strong>5</strong> minutes</p>
+                      <p id="currentInfo">Spray every <strong id="currentMinutes">5</strong> minutes</p>
                       <hr>
                       <h3>Options:</h3>
-                      <form class="" action="#" method="post">
-                        <h5>Presets:</h5>
-                        <div class="form-group">
-                          <label>Every five minutes</label>
-                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
-                        </div>
-                        <div class="form-group">
-                          <label>Every ten minutes</label>
-                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
-                        </div>
-                        <div class="form-group">
-                          <label>Every morning</label>
-                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
-                        </div>
-                        <div class="form-group">
-                          <label>Every night</label>
-                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
-                        </div>
-                        <div class="form-group">
-                          <label>Morning and night</label>
-                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
-                        </div>
-                        <div class="form-group">
-                          <label>24/7</label>
-                          <button type="button" name="button" class="btn btn-sm main-color">Set</button>
-                        </div>
-                        <button type="submit" name="button" class="btn main-color">Save</button>
-                      </form>
+                      <div class="alert alert-info" role="alert"><strong>Info:</strong> For more information about spraying times, please see this great article: <a target="_blank" href="http://aeroponicsdiy.com/aeroponics-misting-frequency-for-root-growth/">Aeroponics Misting Frequency</a></div>
+                      <p>Custom interval between spraying:</p>
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                          <input type="checkbox" id="intervalCheck">
+                        </span>
+                        <input type="text" class="form-control" placeholder="Interval" id="interval">
+                      </div>
+                      <br>
+                      <p>Custom spraying time:</p>
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                          <input type="checkbox" id="timeCheck">
+                        </span>
+                        <input type="text" class="form-control" placeholder="Time" id="time">
+                      </div>
+                      <br>
+                      <p>Presets:</p>
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs1" value="option1">
+                          Morning [5-8 AM]
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs2" value="option2">
+                          Night [5-8 PM]
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs3" value="option3">
+                          Morning and Night
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs4" value="option4">
+                          All Day
+                        </label>
+                      </div>
+                      <button type="button" name="button" class="btn main-color" id="save">Save</button>
+                      `;
+}
+
+function despensing() {
+  var heading = document.getElementById('settingsHeading');
+  heading.innerHTML = 'Wifi Network';
+  var content = document.getElementById('settingsContent');
+  content.innerHTML = `
+                      <h3>Current Information:</h3>
+                      <p id="currentFlora">Flora: <strong id="floraMl">5ml</strong></p>
+                      <p id="currentGrow">Grow: <strong id="growMl">5ml</strong></p>
+                      <p id="currentBloom">Bloom: <strong id="bloomMl">5ml</strong></p>
+                      <hr>
+                      <h3>Options:</h3>
+                      <div class="alert alert-info" role="alert"><strong>Info:</strong> For more information about proper nutrent amounts, see <a target="_blank" href="http://gh.growgh.com/docs/Feedcharts/GH_FloraSeries-REC_03216am.pdf">this PDF</a> by General Hydroponics </div>
                       `;
 }

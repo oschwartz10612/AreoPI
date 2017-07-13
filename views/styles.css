@@ -109,6 +109,12 @@ header p {
 #floraAmount {
   width: 75px;
 }
+#interval {
+  width: 75px;
+}
+#time {
+  width: 58px;
+}
 
 @media (max-width: 767px) {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
