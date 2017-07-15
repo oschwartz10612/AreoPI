@@ -451,7 +451,7 @@ function timing() {
                       <hr>
                       <h3>Options:</h3>
                       <div class="alert alert-info" role="alert"><strong>Info:</strong> For more information about spraying times, please see this great article: <a target="_blank" href="http://aeroponicsdiy.com/aeroponics-misting-frequency-for-root-growth/">Aeroponics Misting Frequency</a></div>
-                      <p>Custom interval between spraying:</p>
+                      <h3>Custom:</h3>
                       <div class="input-group">
                         <span class="input-group-addon">
                           <input type="checkbox" id="intervalCheck">
@@ -459,15 +459,40 @@ function timing() {
                         <input type="text" class="form-control" placeholder="Interval" id="interval">
                       </div>
                       <br>
-                      <p>Custom spraying time:</p>
-                      <div class="input-group">
-                        <span class="input-group-addon">
-                          <input type="checkbox" id="timeCheck">
-                        </span>
-                        <input type="text" class="form-control" placeholder="Time" id="time">
+                      <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="time" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          Time
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                          <li><a href="#">12:00 AM</a></li>
+                          <li><a href="#">1:00 AM</a></li>
+                          <li><a href="#">2:00 AM</a></li>
+                          <li><a href="#">3:00 AM</a></li>
+                          <li><a href="#">4:00 AM</a></li>
+                          <li><a href="#">5:00 AM</a></li>
+                          <li><a href="#">6:00 AM</a></li>
+                          <li><a href="#">7:00 AM</a></li>
+                          <li><a href="#">8:00 AM</a></li>
+                          <li><a href="#">9:00 AM</a></li>
+                          <li><a href="#">10:00 AM</a></li>
+                          <li><a href="#">11:00 AM</a></li>
+                          <li><a href="#">12:00 PM</a></li>
+                          <li><a href="#">1:00 PM</a></li>
+                          <li><a href="#">2:00 PM</a></li>
+                          <li><a href="#">3:00 PM</a></li>
+                          <li><a href="#">4:00 PM</a></li>
+                          <li><a href="#">5:00 PM</a></li>
+                          <li><a href="#">6:00 PM</a></li>
+                          <li><a href="#">7:00 PM</a></li>
+                          <li><a href="#">8:00 PM</a></li>
+                          <li><a href="#">9:00 PM</a></li>
+                          <li><a href="#">10:00 PM</a></li>
+                          <li><a href="#">11:00 PM</a></li>
+                        </ul>
                       </div>
                       <br>
-                      <p>Presets:</p>
+                      <h3>Presets:</h3>
                       <div class="checkbox">
                       <label>
                         <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs1" value="option1">
@@ -492,6 +517,12 @@ function timing() {
                           All Day
                         </label>
                       </div>
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs4" value="option4">
+                          Every five minutes for 30 secounds
+                        </label>
+                      </div>
                       <button type="button" name="button" class="btn main-color" id="save">Save</button>
                       `;
 }
@@ -508,5 +539,150 @@ function despensing() {
                       <hr>
                       <h3>Options:</h3>
                       <div class="alert alert-info" role="alert"><strong>Info:</strong> For more information about proper nutrent amounts, see <a target="_blank" href="http://gh.growgh.com/docs/Feedcharts/GH_FloraSeries-REC_03216am.pdf">this PDF</a> by General Hydroponics </div>
+                      <h4>Custom:</h4>
+                      <p>Flora Amount:</p>
+                      <form class="form-inline">
+                        <div class="form-group">
+                          <label class="sr-only" for="exampleInputAmount">Amount (in millilieaters)</label>
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-tint" aria-hidden="true"></span></div>
+                            <input type="text" class="form-control" id="floraAmount" placeholder="Amount">
+                            <div class="input-group-addon">ml</div>
+                          </div>
+                        </div>
+                        <button type="submit" class="btn main-color">Save</button>
+                      </form>
+                      <br>
+                      <p>Grow Amount:</p>
+                      <form class="form-inline">
+                        <div class="form-group">
+                          <label class="sr-only" for="exampleInputAmount">Amount (in millilieaters)</label>
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-tint" aria-hidden="true"></span></div>
+                            <input type="text" class="form-control" id="growAmount" placeholder="Amount">
+                            <div class="input-group-addon">ml</div>
+                          </div>
+                        </div>
+                        <button type="submit" class="btn main-color">Save</button>
+                      </form>
+                      <br>
+                      <p>Bloom Amount:</p>
+                      <form class="form-inline">
+                        <div class="form-group">
+                          <label class="sr-only" for="exampleInputAmount">Amount (in millilieaters)</label>
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-tint" aria-hidden="true"></span></div>
+                            <input type="text" class="form-control" id="bloomAmount" placeholder="Amount">
+                            <div class="input-group-addon">ml</div>
+                          </div>
+                        </div>
+                        <button type="submit" class="btn main-color">Save</button>
+                      </form>
+                      <br>
+                      <h5>Timeing:</h5>
+                      <p>Day:</p>
+                      <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="day" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          Day
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                          <li><a href="#">Monday</a></li>
+                          <li><a href="#">Tuesday</a></li>
+                          <li><a href="#">Wendsay</a></li>
+                          <li><a href="#">Thursday</a></li>
+                          <li><a href="#">Friday</a></li>
+                          <li><a href="#">Saturday</a></li>
+                          <li><a href="#">Sunday</a></li>
+                        </ul>
+                      </div>
+                      <br>
+                      <p>Time:</p>
+                      <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="time" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          Time
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                          <li><a href="#">12:00 AM</a></li>
+                          <li><a href="#">1:00 AM</a></li>
+                          <li><a href="#">2:00 AM</a></li>
+                          <li><a href="#">3:00 AM</a></li>
+                          <li><a href="#">4:00 AM</a></li>
+                          <li><a href="#">5:00 AM</a></li>
+                          <li><a href="#">6:00 AM</a></li>
+                          <li><a href="#">7:00 AM</a></li>
+                          <li><a href="#">8:00 AM</a></li>
+                          <li><a href="#">9:00 AM</a></li>
+                          <li><a href="#">10:00 AM</a></li>
+                          <li><a href="#">11:00 AM</a></li>
+                          <li><a href="#">12:00 PM</a></li>
+                          <li><a href="#">1:00 PM</a></li>
+                          <li><a href="#">2:00 PM</a></li>
+                          <li><a href="#">3:00 PM</a></li>
+                          <li><a href="#">4:00 PM</a></li>
+                          <li><a href="#">5:00 PM</a></li>
+                          <li><a href="#">6:00 PM</a></li>
+                          <li><a href="#">7:00 PM</a></li>
+                          <li><a href="#">8:00 PM</a></li>
+                          <li><a href="#">9:00 PM</a></li>
+                          <li><a href="#">10:00 PM</a></li>
+                          <li><a href="#">11:00 PM</a></li>
+                        </ul>
+                      </div>
+                      <hr>
+                      <h3>Presets:</h3>
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs1" value="option1">
+                          Every Sunday at 5:00
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs2" value="option2">
+                          Every Wensday at 5:00
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs3" value="option3">
+                          Every Sunday and Wendsay at 5:00
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs4" value="option4">
+                          Every Day at 5:00 <strong>Not recomended!</strong>
+                        </label>
+                      </div>
+                      <button type="button" name="button" class="btn main-color" id="save">Save</button>
+                      `;
+}
+
+function ph() {
+  var heading = document.getElementById('settingsHeading');
+  heading.innerHTML = 'Wifi Network';
+  var content = document.getElementById('settingsContent');
+  content.innerHTML = `
+                      <h3>Current Information:</h3>
+                      <p>Heep ph leval at <span id="phTarget">7</span></p>
+                      <hr>
+                      <h3>Options:</h3>
+                      <div class="alert alert-info" role="alert"><strong>Info:</strong> For more information about proper ph levals, see <a target="_blank" href="http://www.growthtechnology.com/growtorial/what-is-the-ph-value/">this website</a> by Groth Techonlogy for more information</div>
+                      <h3>Custom:</h3>
+                      <p>Keep PH levals at:</p>
+                      <form class="form-inline">
+                        <div class="form-group">
+                          <label class="sr-only" for="exampleInputAmount">Leval (based on PH scale)</label>
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-tint" aria-hidden="true"></span></div>
+                            <input type="text" class="form-control" id="phAmount" placeholder="Leval">
+                            <div class="input-group-addon"></div>
+                          </div>
+                        </div>
+                        <button type="submit" class="btn main-color">Save</button>
+                      </form>
+                      <br>
                       `;
 }
