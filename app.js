@@ -11,6 +11,7 @@ app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use('/icon', express.static(__dirname + '/views/'));
 app.use('/style', express.static(__dirname + '/views/'));
 app.use('/main', express.static(__dirname + '/'));
+app.use('/data', express.static(__dirname + '/data/'));
 
 //This is just a test
 

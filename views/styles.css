@@ -115,6 +115,9 @@ header p {
 #time {
   width: 58px;
 }
+#secounds {
+  width: 90px;
+}
 
 @media (max-width: 767px) {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {

@@ -23,7 +23,12 @@ function dashboard() {
                         <canvas id="myEC" width="200" height="100"></canvas>
                         <hr>
                         <h3 class="text-center">Tempatures</h3>
-                        <canvas id="myTemps" width="200" height="100"></canvas>`;
+                        <canvas id="myTemps" width="200" height="100"></canvas>
+                        <hr>
+                        <h3 class="text-center">Water Levals</h3>
+                        <canvas id="myWater" width="200" height="100"></canvas>
+                        `;
+
   var ctx = document.getElementById("myPH");
   var data1 = [12, 21, 52, 75];
   var lables1 = ["1", "2", "3", "4"];
@@ -108,6 +113,54 @@ function dashboard() {
           ticks: {
             beginAtZero: true
           }
+        }]
+      }
+    }
+  });
+  var ctx = document.getElementById("myWater");
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: [{
+        data: [20, 50, 100, 75, 25, 0],
+        label: 'Tank One',
+
+        // This binds the dataset to the left y axis
+        yAxisID: 'left-y-axis',
+        backgroundColor: [
+          '#1B4965',
+        ],
+        borderColor: [
+          '#133549',
+        ],
+        fill: false
+      }, {
+        data: [0.1, 0.5, 1.0, 2.0, 1.5, 0],
+        label: 'Tank Two',
+
+        // This binds the dataset to the right y axis
+        yAxisID: 'right-y-axis',
+
+        backgroundColor: [
+          '#42CAFD',
+        ],
+        borderColor: [
+          '#236E89',
+        ],
+        fill: false
+      }],
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          id: 'left-y-axis',
+          type: 'linear',
+          position: 'left'
+        }, {
+          id: 'right-y-axis',
+          type: 'linear',
+          position: 'right'
         }]
       }
     }
@@ -197,7 +250,7 @@ function changeEC() {
                           <button type="submit" class="btn main-color">Add</button>
                           <div id="ecAlert" class="input-group"></div>
                         </form>
-                      `;
+                        `;
   var phForm = document.getElementById('ec-form');
   phForm.addEventListener("submit", addEC);
   var data1 = [];
@@ -298,7 +351,9 @@ function viewWater() {
                           </div>
                         </div>
                         <canvas id="myChart" width="300" height="150"></canvas>
-                        <button type="button" name="button" class="btn main-color" id="manageNotifcations"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Manage Notifcations</button>`;
+                        <button type="button" name="button" class="btn main-color" id="manageNotifcations"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Manage Notifcations</button>
+                        `;
+
   var data1 = [];
   var ctx = document.getElementById("myChart");
   var myChart = new Chart(ctx, {
@@ -402,18 +457,65 @@ function notifcations() {
                       </div>
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="" id="ph">
+                          <input type="checkbox" value="" id="despensing">
                           Despensing
                         </label>
                       </div>
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="" id="ph">
+                          <input type="checkbox" value="" id="growth">
                           Groth Season
                         </label>
                       </div>
                       <button type="button" name="button" class="btn main-color" id="submit">Submit</button>
                       `;
+
+  $.getJSON("/data/settings.json", function(data) {
+    var json = data;
+    $("#name").html(json.notifcations.notificationName);
+    $("#email").html(json.notifcations.notificationEmail);
+    if (json.notifcations.notifcationOption1) {
+      $("#waterLevals1").wrap('<input type="checkbox" value="" id="waterLevals1" checked>');
+    }
+    else {
+      $("#waterLevals1").wrap('<input type="checkbox" value="" id="waterLevals1">');
+    }
+
+    if (json.notifcations.notifcationOption2) {
+      $("#waterLevals2").wrap('<input type="checkbox" value="" id="waterLevals1" checked>');
+    }
+    else {
+      $("#waterLevals2").wrap('<input type="checkbox" value="" id="waterLevals1">');
+    }
+
+    if (json.notifcations.notifcationOption3) {
+      $("#temps").wrap('<input type="checkbox" value="" id="waterLevals1" checked>');
+    }
+    else {
+      $("#temps").wrap('<input type="checkbox" value="" id="waterLevals1">');
+    }
+
+    if (json.notifcations.notifcationOption4) {
+      $("#ph").wrap('<input type="checkbox" value="" id="waterLevals1" checked>');
+    }
+    else {
+      $("#ph").wrap('<input type="checkbox" value="" id="waterLevals1">');
+    }
+
+    if (json.notifcations.notifcationOption5) {
+      $("#despensing").wrap('<input type="checkbox" value="" id="waterLevals1" checked>');
+    }
+    else {
+      $("#despensing").wrap('<input type="checkbox" value="" id="waterLevals1">');
+    }
+
+    if (json.notifcations.notifcationOption6) {
+      $("#growth").wrap('<input type="checkbox" value="" id="waterLevals1" checked>');
+    }
+    else {
+      $("#growth").wrap('<input type="checkbox" value="" id="waterLevals1">');
+    }
+  });
 }
 
 function wifi() {
@@ -439,59 +541,39 @@ function wifi() {
                         <button type="submit" class="btn btn-default main-color">Update Network Info</button>
                       </form>
                       `;
+
+  $.getJSON("/data/settings.json", function(data) {
+    var json = data;
+    $("#name").html(json.wifi.oldSSID);
+  });
 }
 
 function timing() {
   var heading = document.getElementById('settingsHeading');
-  heading.innerHTML = 'Wifi Network';
+  heading.innerHTML = 'Spray Timeing';
   var content = document.getElementById('settingsContent');
   content.innerHTML = `
                       <h3>Current Information:</h3>
-                      <p id="currentInfo">Spray every <strong id="currentMinutes">5</strong> minutes</p>
+                      <p id="currentInfo">Spray every <strong id="currentMinutes">5</strong> minutes for <strong id="currentTime">10</strong> secounds</p>
                       <hr>
                       <h3>Options:</h3>
                       <div class="alert alert-info" role="alert"><strong>Info:</strong> For more information about spraying times, please see this great article: <a target="_blank" href="http://aeroponicsdiy.com/aeroponics-misting-frequency-for-root-growth/">Aeroponics Misting Frequency</a></div>
                       <h3>Custom:</h3>
+                      <p>Interval between</p>
                       <div class="input-group">
                         <span class="input-group-addon">
-                          <input type="checkbox" id="intervalCheck">
+                          <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
                         </span>
                         <input type="text" class="form-control" placeholder="Interval" id="interval">
                       </div>
                       <br>
-                      <div class="dropdown">
-                      <button class="btn btn-default dropdown-toggle" type="button" id="time" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          Time
-                          <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                          <li><a href="#">12:00 AM</a></li>
-                          <li><a href="#">1:00 AM</a></li>
-                          <li><a href="#">2:00 AM</a></li>
-                          <li><a href="#">3:00 AM</a></li>
-                          <li><a href="#">4:00 AM</a></li>
-                          <li><a href="#">5:00 AM</a></li>
-                          <li><a href="#">6:00 AM</a></li>
-                          <li><a href="#">7:00 AM</a></li>
-                          <li><a href="#">8:00 AM</a></li>
-                          <li><a href="#">9:00 AM</a></li>
-                          <li><a href="#">10:00 AM</a></li>
-                          <li><a href="#">11:00 AM</a></li>
-                          <li><a href="#">12:00 PM</a></li>
-                          <li><a href="#">1:00 PM</a></li>
-                          <li><a href="#">2:00 PM</a></li>
-                          <li><a href="#">3:00 PM</a></li>
-                          <li><a href="#">4:00 PM</a></li>
-                          <li><a href="#">5:00 PM</a></li>
-                          <li><a href="#">6:00 PM</a></li>
-                          <li><a href="#">7:00 PM</a></li>
-                          <li><a href="#">8:00 PM</a></li>
-                          <li><a href="#">9:00 PM</a></li>
-                          <li><a href="#">10:00 PM</a></li>
-                          <li><a href="#">11:00 PM</a></li>
-                        </ul>
+                      <p>Secounds on</p>
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Secounds" id="secounds">
                       </div>
-                      <br>
                       <h3>Presets:</h3>
                       <div class="checkbox">
                       <label>
@@ -525,17 +607,44 @@ function timing() {
                       </div>
                       <button type="button" name="button" class="btn main-color" id="save">Save</button>
                       `;
+
+  $.getJSON("/data/settings.json", function(data) {
+    var json = data;
+    if (!json.sprayer.morning == true || json.sprayer.night == true) {
+      $("#currentMinutes").html(json.sprayer.sprayInterval);
+      $("#currentTime").html(json.sprayer.sprayTime);
+    }
+    if (json.sprayer.morning == true && json.sprayer.night == true) {
+      $("#currentInfo").html("Spray every morning and night from 5 to 8");
+      $("#optionscheckboxs3").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs3" value="option1" checked>');
+    }
+    else {
+      if (json.sprayer.morning) {
+        $("#currentInfo").html("Spray every morning from 5 to 8");
+        $("#optionscheckboxs1").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs1" value="option1" checked>');
+      }
+      if (json.sprayer.night) {
+        $("#currentInfo").html("Spray every night from 5 to 8");
+        $("#optionscheckboxs2").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs2" value="option1" checked>');
+      }
+    }
+    if (json.sprayer.day) {
+      $("#currentInfo").html("Spray all day");
+      $("#optionscheckboxs4").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs4 value="option1" checked>');
+    }
+  });
 }
 
 function despensing() {
   var heading = document.getElementById('settingsHeading');
-  heading.innerHTML = 'Wifi Network';
+  heading.innerHTML = 'Nutrents';
   var content = document.getElementById('settingsContent');
   content.innerHTML = `
                       <h3>Current Information:</h3>
                       <p id="currentFlora">Flora: <strong id="floraMl">5ml</strong></p>
                       <p id="currentGrow">Grow: <strong id="growMl">5ml</strong></p>
                       <p id="currentBloom">Bloom: <strong id="bloomMl">5ml</strong></p>
+                      <p id="currentTime">Despensing every <strong id="day">Sunday</strong> at <strong id="time">5:00</strong></p>
                       <hr>
                       <h3>Options:</h3>
                       <div class="alert alert-info" role="alert"><strong>Info:</strong> For more information about proper nutrent amounts, see <a target="_blank" href="http://gh.growgh.com/docs/Feedcharts/GH_FloraSeries-REC_03216am.pdf">this PDF</a> by General Hydroponics </div>
@@ -658,15 +767,36 @@ function despensing() {
                       </div>
                       <button type="button" name="button" class="btn main-color" id="save">Save</button>
                       `;
+
+  $.getJSON("/data/settings.json", function(data) {
+    var json = data;
+    $("#floraMl").html(json.nutrents.floraAmount);
+    $("#bloomMl").html(json.nutrents.bloomAmount);
+    $("#growMl").html(json.nutrents.growAmount);
+    $("#day").html(json.nutrents.day);
+    $("#time").html(json.nutrents.time);
+    if (json.nutrents.day == "Sunday" && json.nutrents.time == "5:00 PM") {
+      $("#optionscheckboxs1").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs1" value="option1"checked>');
+    }
+    if (json.nutrents.day == "Wensday" && json.nutrents.time == "5:00 PM") {
+      $("#optionscheckboxs2").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs2" value="option1"checked>');
+    }
+    if (json.nutrents.day == "Wensday and Sunday" && json.nutrents.time == "5:00 PM") {
+      $("#optionscheckboxs3").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs3" value="option1"checked>');
+    }
+    if (json.nutrents.day == "day" && json.nutrents.time == "5:00 PM") {
+      $("#optionscheckboxs4").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs4" value="option1"checked>');
+    }
+  });
 }
 
 function ph() {
   var heading = document.getElementById('settingsHeading');
-  heading.innerHTML = 'Wifi Network';
+  heading.innerHTML = 'PH Levals';
   var content = document.getElementById('settingsContent');
   content.innerHTML = `
                       <h3>Current Information:</h3>
-                      <p>Heep ph leval at <span id="phTarget">7</span></p>
+                      <p>Keep ph leval at <strong id="phTarget">7</strong></p>
                       <hr>
                       <h3>Options:</h3>
                       <div class="alert alert-info" role="alert"><strong>Info:</strong> For more information about proper ph levals, see <a target="_blank" href="http://www.growthtechnology.com/growtorial/what-is-the-ph-value/">this website</a> by Groth Techonlogy for more information</div>
@@ -685,4 +815,9 @@ function ph() {
                       </form>
                       <br>
                       `;
+
+  $.getJSON("/data/settings.json", function(data) {
+    var json = data;
+    $("#phTarget").html(json.phTarget);
+  });
 }
