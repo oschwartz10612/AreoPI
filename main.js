@@ -11,6 +11,8 @@ function load() {
   }
 }
 
+var lables = ["Monday", "Tuesday", "Wensday", "Thursday", "Friday", "Saturday", "Sunday"];
+
 function dashboard() {
   var heading = document.getElementById('heading');
   heading.innerHTML = 'Dashboard';
@@ -28,142 +30,141 @@ function dashboard() {
                         <h3 class="text-center">Water Levals</h3>
                         <canvas id="myWater" width="200" height="100"></canvas>
                         `;
-
-  var ctx = document.getElementById("myPH");
-  var data1 = [12, 21, 52, 75];
-  var lables1 = ["1", "2", "3", "4"];
-  var myPH = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: lables1,
-      datasets: [{
-        label: 'PH value',
-        data: data1,
-        fill: false,
-        backgroundColor: [
-          '#A31621',
-        ],
-        borderColor: [
-          '#5E1621',
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
+  $.getJSON("/data/data.json", function(data) {
+    var ctx = document.getElementById("myPH");
+    var myPH = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: lables,
+        datasets: [{
+          label: 'PH value',
+          data: data.ph,
+          fill: false,
+          backgroundColor: [
+            '#A31621',
+          ],
+          borderColor: [
+            '#5E1621',
+          ],
+          borderWidth: 1
         }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
       }
-    }
-  });
+    });
 
-  var ctx = document.getElementById("myEC");
-  var myEC = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: lables1,
-      datasets: [{
-        label: 'EC value',
-        data: data1,
-        fill: false,
-        backgroundColor: [
-          '#1F7A8C',
-        ],
-        borderColor: [
-          '#005060',
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
+    var ctx = document.getElementById("myEC");
+    var myEC = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: lables,
+        datasets: [{
+          label: 'EC value',
+          data: data.ec,
+          fill: false,
+          backgroundColor: [
+            '#1F7A8C',
+          ],
+          borderColor: [
+            '#005060',
+          ],
+          borderWidth: 1
         }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
       }
-    }
-  });
+    });
 
-  var ctx = document.getElementById("myTemps");
-  var myTemps = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: lables1,
-      datasets: [{
-        label: 'Tempatures',
-        data: data1,
-        fill: false,
-        backgroundColor: [
-          '#E3B505',
-        ],
-        borderColor: [
-          '#776002',
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
+    var ctx = document.getElementById("myTemps");
+    var myTemps = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: lables,
+        datasets: [{
+          label: 'Tempatures',
+          data: data.tempatures,
+          fill: false,
+          backgroundColor: [
+            '#E3B505',
+          ],
+          borderColor: [
+            '#776002',
+          ],
+          borderWidth: 1
         }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
       }
-    }
-  });
-  var ctx = document.getElementById("myWater");
-  var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      datasets: [{
-        data: [20, 50, 100, 75, 25, 0],
-        label: 'Tank One',
+    });
+    var ctx = document.getElementById("myWater");
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        datasets: [{
+          data: data.water.tank1,
+          label: 'Tank One',
 
-        // This binds the dataset to the left y axis
-        yAxisID: 'left-y-axis',
-        backgroundColor: [
-          '#1B4965',
-        ],
-        borderColor: [
-          '#133549',
-        ],
-        fill: false
-      }, {
-        data: [0.1, 0.5, 1.0, 2.0, 1.5, 0],
-        label: 'Tank Two',
-
-        // This binds the dataset to the right y axis
-        yAxisID: 'right-y-axis',
-
-        backgroundColor: [
-          '#42CAFD',
-        ],
-        borderColor: [
-          '#236E89',
-        ],
-        fill: false
-      }],
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          id: 'left-y-axis',
-          type: 'linear',
-          position: 'left'
+          // This binds the dataset to the left y axis
+          yAxisID: 'left-y-axis',
+          backgroundColor: [
+            '#1B4965',
+          ],
+          borderColor: [
+            '#133549',
+          ],
+          fill: false
         }, {
-          id: 'right-y-axis',
-          type: 'linear',
-          position: 'right'
-        }]
+          data: data.water.tank2,
+          label: 'Tank Two',
+
+          // This binds the dataset to the right y axis
+          yAxisID: 'right-y-axis',
+
+          backgroundColor: [
+            '#42CAFD',
+          ],
+          borderColor: [
+            '#236E89',
+          ],
+          fill: false
+        }],
+        labels: lables
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            id: 'left-y-axis',
+            type: 'linear',
+            position: 'left'
+          }, {
+            id: 'right-y-axis',
+            type: 'linear',
+            position: 'right'
+          }]
+        }
       }
-    }
+    });
   });
 }
 
@@ -186,36 +187,38 @@ function changePH() {
                           <div id="phAlert" class="input-group"></div>
                         </form>
                       `;
-  var phForm = document.getElementById('ph-form');
-  phForm.addEventListener("submit", addPH);
-  var data1 = [];
-  var ctx = document.getElementById("myChart");
-  var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: [""],
-      datasets: [{
-        label: 'PH value',
-        data: data1,
-        fill: false,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255,99,132,1)',
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
+
+  $.getJSON("/data/data.json", function(data) {
+    var phForm = document.getElementById('ph-form');
+    phForm.addEventListener("submit", addPH);
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: lables,
+        datasets: [{
+          label: 'PH value',
+          data: data.ph,
+          fill: false,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+          ],
+          borderWidth: 1
         }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
       }
-    }
+    });
   });
 }
 
@@ -251,36 +254,38 @@ function changeEC() {
                           <div id="ecAlert" class="input-group"></div>
                         </form>
                         `;
-  var phForm = document.getElementById('ec-form');
-  phForm.addEventListener("submit", addEC);
-  var data1 = [];
-  var ctx = document.getElementById("myChart");
-  var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: [""],
-      datasets: [{
-        label: 'EC value',
-        data: data1,
-        fill: false,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255,99,132,1)',
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
+
+  $.getJSON("/data/data.json", function(data) {
+    var ecForm = document.getElementById('ec-form');
+    ecForm.addEventListener("submit", addEC);
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: lables,
+        datasets: [{
+          label: 'EC value',
+          data: data.ec,
+          fill: false,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+          ],
+          borderWidth: 1
         }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
       }
-    }
+    });
   });
 }
 
@@ -302,34 +307,36 @@ function viewTemp() {
   heading.innerHTML = 'Tempatures';
   var content = document.getElementById('content');
   content.innerHTML = '<canvas id="myChart" width="300" height="150"></canvas>';
-  var data1 = [];
-  var ctx = document.getElementById("myChart");
-  var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: [""],
-      datasets: [{
-        label: 'Tempatures',
-        data: data1,
-        fill: false,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255,99,132,1)',
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
+
+  $.getJSON("/data/data.json", function(data) {
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: lables,
+        datasets: [{
+          label: 'Tempatures',
+          data: data.tempatures,
+          fill: false,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+          ],
+          borderWidth: 1
         }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
       }
-    }
+    });
   });
 }
 
@@ -340,68 +347,70 @@ function viewWater() {
   content.innerHTML = `
                         <h3 class="text-center">Tank One:</h3>
                         <div class="progress">
-                          <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                            <span class="sr-only">60% Complete</span>
-                          </div>
+                          <div id="tank1" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <h3 class="text-center">Tank Two:</h3>
                         <div class="progress">
-                          <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                            <span class="sr-only">60% Complete</span>
-                          </div>
+                          <div id="tank2" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <canvas id="myChart" width="300" height="150"></canvas>
-                        <button type="button" name="button" class="btn main-color" id="manageNotifcations"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Manage Notifcations</button>
+                        <a href="/settings" class="btn main-color" id="manageNotifcations"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Manage Notifcations</a>
                         `;
 
-  var data1 = [];
-  var ctx = document.getElementById("myChart");
-  var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      datasets: [{
-        data: [20, 50, 100, 75, 25, 0],
-        label: 'Tank One',
+  $.getJSON("/data/data.json", function(data) {
+    var tank1 = (data.water.tank1Current - 0) * (100 - 0) / (1000 - 0) + 0; //Need to make a settings and json value for min and max in tank
+    $("#tank1").css("width", tank1+"%");
+    var tank2 = (data.water.tank2Current - 0) * (100 - 0) / (1000 - 0) + 0; //Need to make a settings and json value for min and max in tank
+    $("#tank2").css("width", tank2+"%")
 
-        // This binds the dataset to the left y axis
-        yAxisID: 'left-y-axis',
-        backgroundColor: [
-          '#1B4965',
-        ],
-        borderColor: [
-          '#133549',
-        ],
-        fill: false
-      }, {
-        data: [0.1, 0.5, 1.0, 2.0, 1.5, 0],
-        label: 'Tank Two',
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        datasets: [{
+          data: data.water.tank1,
+          label: 'Tank One',
 
-        // This binds the dataset to the right y axis
-        yAxisID: 'right-y-axis',
-
-        backgroundColor: [
-          '#42CAFD',
-        ],
-        borderColor: [
-          '#236E89',
-        ],
-        fill: false
-      }],
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          id: 'left-y-axis',
-          type: 'linear',
-          position: 'left'
+          // This binds the dataset to the left y axis
+          yAxisID: 'left-y-axis',
+          backgroundColor: [
+            '#1B4965',
+          ],
+          borderColor: [
+            '#133549',
+          ],
+          fill: false
         }, {
-          id: 'right-y-axis',
-          type: 'linear',
-          position: 'right'
-        }]
+          data: data.water.tank2,
+          label: 'Tank Two',
+
+          // This binds the dataset to the right y axis
+          yAxisID: 'right-y-axis',
+
+          backgroundColor: [
+            '#42CAFD',
+          ],
+          borderColor: [
+            '#236E89',
+          ],
+          fill: false
+        }],
+        labels: lables
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            id: 'left-y-axis',
+            type: 'linear',
+            position: 'left'
+          }, {
+            id: 'right-y-axis',
+            type: 'linear',
+            position: 'right'
+          }]
+        }
       }
-    }
+    });
   });
 }
 
