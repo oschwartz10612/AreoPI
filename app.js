@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const fs = require('fs');
 
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
@@ -14,6 +15,7 @@ app.use('/main', express.static(__dirname + '/'));
 app.use('/data', express.static(__dirname + '/data/'));
 
 //This is just a test
+var data = JSON.parse(fs.readFileSync(__dirname + '/data/data.json', 'utf8'));
 
 app.get('/', function(req, res) {
   res.render('index.html');

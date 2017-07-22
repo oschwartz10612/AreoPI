@@ -1,6 +1,18 @@
 window.onload = load();
 
 function load() {
+  $.getJSON("/data/data.json", function(data) {
+    $("#bloomProgress").css("width", data.growthSeason.bloom+"%");
+    $("#growProgress").css("width", data.growthSeason.grow+"%");
+    $("#plantProgress").css("width", data.growthSeason.sprout+"%");
+    $("#sproutProgress").css("width", data.growthSeason.plant+"%");
+    if (data.sprayer == "Off") {
+      $("#sprayerAlert").addClass("alert-danger");
+    }
+    $("#dashboardOnOff").html(data.sprayer);
+    $("#timeUntil").html("Next in: " + data.nextSpray + " min");
+  });
+
   var path = window.location.pathname;
   var page = path.split("/").pop();
   if (page == 'settings') {
@@ -9,6 +21,10 @@ function load() {
   if (page == '') {
     dashboard();
   }
+}
+
+function sprayerOn() {
+
 }
 
 var lables = ["Monday", "Tuesday", "Wensday", "Thursday", "Friday", "Saturday", "Sunday"];

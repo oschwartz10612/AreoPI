@@ -1,9 +1,0 @@
-{
-  "sprayer": "On",
-  "growthSeason": {
-    "bloom": "50%",
-    "grow": "50%",
-    "sprout": "50%",
-    "plant": "50%",
-  }
-}
