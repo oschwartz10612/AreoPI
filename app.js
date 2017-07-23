@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
+var bodyParser = require('body-parser');
 
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
@@ -14,9 +15,32 @@ app.use('/style', express.static(__dirname + '/views/'));
 app.use('/main', express.static(__dirname + '/'));
 app.use('/data', express.static(__dirname + '/data/'));
 
-//This is just a test
-var data = JSON.parse(fs.readFileSync(__dirname + '/data/data.json', 'utf8'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
 
+//Main Process
+//var data = JSON.parse(fs.readFileSync(__dirname + '/data/data.json', 'utf8'));
+
+//api:
+app.post('/api/sprayer', function(req, res) {
+  if (req.body.sprayer == "on") {
+    console.log("Turn on Sprayer");
+  }
+});
+
+app.post('/api/nutrents', function(req, res) {
+  console.log(req.body.flora);
+  console.log(req.body.grow);
+  console.log(req.body.bloom);
+});
+
+app.post('/api/ph', function(req, res) {
+  console.log(req.body.ph);
+});
+
+//Renderer:
 app.get('/', function(req, res) {
   res.render('index.html');
 });

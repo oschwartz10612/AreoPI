@@ -9,6 +9,7 @@
   "author": "Owen Schwartz",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.6.0",
     "ejs": "^2.5.6",

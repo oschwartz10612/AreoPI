@@ -24,7 +24,17 @@ function load() {
 }
 
 function sprayerOn() {
-
+  $.post("/api/sprayer",
+      {
+          sprayer: "on"
+      },
+      function(data, status){
+          console.log(data);
+          console.log(status);
+      });
+  $("#sprayerAlert").removeClass("alert-danger");
+  $("#dashboardOnOff").html("On");
+  $("#timeUntil").html("Spraying");
 }
 
 var lables = ["Monday", "Tuesday", "Wensday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -243,6 +253,14 @@ function addPH(e) {
   var phAmount = document.getElementById('phAmount')
   if (phAmount.value != '' && parseInt(phAmount.value)) {
     document.getElementById('phAlert').innerHTML = '<div class="alert alert-success" id="formAlert" role="alert"><strong>Sucsess!</strong>' + phAmount.value + 'ml of PH up added.</div>';
+    $.post("/api/ph",
+        {
+            ph: phAmount.value,
+        },
+        function(data, status){
+            console.log(data);
+            console.log(status);
+        });
   } else {
     alert("Please enter a valid PH amount");
   }
@@ -312,6 +330,16 @@ function addEC(e) {
   var growAmount = document.getElementById('growAmount');
   if (parseInt(floraAmount.value) >= 0 && parseInt(bloomAmount.value) >= 0 && parseInt(floraAmount.value) >= 0) {
     document.getElementById('ecAlert').innerHTML = '<div class="alert alert-success" id="formAlert" role="alert"><strong>Sucsess!</strong> ' + floraAmount.value + 'ml of Flora added, ' + growAmount.value + 'ml of Grow added, and ' + bloomAmount.value + 'ml of Bloom added.</div>';
+    $.post("/api/nutrents",
+        {
+            flora: floraAmount.value,
+            bloom: bloomAmount.value,
+            grow: growAmount.value
+        },
+        function(data, status){
+            console.log(data);
+            console.log(status);
+        });
   } else {
     alert("Please enter a valid nutrent amount");
   }
