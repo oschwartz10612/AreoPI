@@ -31,7 +31,7 @@ function sprayerOn() {
       function(data, status){
           console.log(data);
           console.log(status);
-      });
+  });
   $("#sprayerAlert").removeClass("alert-danger");
   $("#dashboardOnOff").html("On");
   $("#timeUntil").html("Spraying");
@@ -479,48 +479,47 @@ function notifcations() {
                           <label for="email">Email</label>
                           <input type="email" class="form-control" id="email" placeholder="Email Address">
                         </div>
-                        <button type="submit" class="btn btn-default main-color">Update Information</button>
+                        <button type="submit" class="btn btn-default main-color" id="saveInfo">Update Information</button>
                       </form>
                       <hr>
                       <h3>Recive notifcations about:</h3>
-
                       <div class="checkbox">
-                      <label>
-                        <input type="checkbox" value="" id="waterLevals1">
-                        Water levals in tank 1
-                      </label>
+                        <label>
+                          <input type="checkbox" value="option1" id="waterLevals1">
+                          Water levals in tank 1
+                        </label>
                       </div>
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="" id="waterLevals2">
+                          <input type="checkbox" value="option2" id="waterLevals2">
                           Water levals in tank 2
                         </label>
                       </div>
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="" id="temps">
+                          <input type="checkbox" value="option3" id="temps">
                           High tempature levals
                         </label>
                       </div>
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="" id="ph">
+                          <input type="checkbox" value="option4" id="ph">
                           High PH
                         </label>
                       </div>
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="" id="despensing">
+                          <input type="checkbox" value="option5" id="despensing">
                           Despensing
                         </label>
                       </div>
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="" id="growth">
-                          Groth Season
+                          <input type="checkbox" value="option1" id="growth">
+                          Growth Season
                         </label>
                       </div>
-                      <button type="button" name="button" class="btn main-color" id="submit">Submit</button>
+                      <button type="button" name="button" class="btn main-color" id="save">Submit</button>
                       `;
 
   $.getJSON("/data/settings.json", function(data) {
@@ -535,39 +534,69 @@ function notifcations() {
     }
 
     if (json.notifcations.notifcationOption2) {
-      $("#waterLevals2").wrap('<input type="checkbox" value="" id="waterLevals1" checked>');
+      $("#waterLevals2").wrap('<input type="checkbox" value="" id="waterLevals2" checked>');
     }
     else {
-      $("#waterLevals2").wrap('<input type="checkbox" value="" id="waterLevals1">');
+      $("#waterLevals2").wrap('<input type="checkbox" value="" id="waterLevals2">');
     }
 
     if (json.notifcations.notifcationOption3) {
-      $("#temps").wrap('<input type="checkbox" value="" id="waterLevals1" checked>');
+      $("#temps").wrap('<input type="checkbox" value="" id="temps" checked>');
     }
     else {
-      $("#temps").wrap('<input type="checkbox" value="" id="waterLevals1">');
+      $("#temps").wrap('<input type="checkbox" value="" id="temps">');
     }
 
     if (json.notifcations.notifcationOption4) {
-      $("#ph").wrap('<input type="checkbox" value="" id="waterLevals1" checked>');
+      $("#ph").wrap('<input type="checkbox" value="" id="ph" checked>');
     }
     else {
-      $("#ph").wrap('<input type="checkbox" value="" id="waterLevals1">');
+      $("#ph").wrap('<input type="checkbox" value="" id="ph">');
     }
 
     if (json.notifcations.notifcationOption5) {
-      $("#despensing").wrap('<input type="checkbox" value="" id="waterLevals1" checked>');
+      $("#despensing").wrap('<input type="checkbox" value="" id="despensing" checked>');
     }
     else {
-      $("#despensing").wrap('<input type="checkbox" value="" id="waterLevals1">');
+      $("#despensing").wrap('<input type="checkbox" value="" id="despensing">');
     }
 
     if (json.notifcations.notifcationOption6) {
-      $("#growth").wrap('<input type="checkbox" value="" id="waterLevals1" checked>');
+      $("#growth").wrap('<input type="checkbox" value="" id="growth" checked>');
     }
     else {
-      $("#growth").wrap('<input type="checkbox" value="" id="waterLevals1">');
+      $("#growth").wrap('<input type="checkbox" value="" id="growth">');
     }
+  });
+
+  $( "#saveInfo" ).click(function(e) {
+    e.preventDefault();
+    $.post("/api/settings/notifcations",
+        {
+            name: $("#name").val(),
+            email: $("#email").val()
+        },
+        function(data, status){
+            console.log(data);
+            console.log(status);
+    });
+  });
+
+  $( "#save" ).click(function(e) {
+    e.preventDefault();
+    $.post("/api/settings/notifcations",
+        {
+            notifcationOption1: $("#waterLevals1").is(':checked'),
+            notifcationOption2: $("#waterLevals2").is(':checked'),
+            notifcationOption3: $("#temps").is(':checked'),
+            notifcationOption4: $("#ph").is(':checked'),
+            notifcationOption5: $("#despensing").is(':checked'),
+            notifcationOption6: $("#growth").is(':checked')
+        },
+        function(data, status){
+            console.log(data);
+            console.log(status);
+    });
   });
 }
 
@@ -591,13 +620,26 @@ function wifi() {
                           <label for="password">Password</label>
                           <input type="password" class="form-control" id="password" placeholder="Password">
                         </div>
-                        <button type="submit" class="btn btn-default main-color">Update Network Info</button>
+                        <button type="submit" class="btn btn-default main-color" id="save">Update Network Info</button>
                       </form>
                       `;
 
   $.getJSON("/data/settings.json", function(data) {
     var json = data;
     $("#name").html(json.wifi.oldSSID);
+  });
+
+  $( "#save" ).click(function(e) {
+    e.preventDefault();
+    $.post("/api/settings/wifi",
+        {
+            ssid: $("#ssid").val(),
+            password: $("#password").val()
+        },
+        function(data, status){
+            console.log(data);
+            console.log(status);
+    });
   });
 }
 
@@ -654,7 +696,7 @@ function timing() {
                       </div>
                       <div class="checkbox">
                       <label>
-                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs4" value="option4">
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs5" value="option4">
                           Every five minutes for 30 secounds
                         </label>
                       </div>
@@ -686,6 +728,23 @@ function timing() {
       $("#optionscheckboxs4").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs4 value="option1" checked>');
     }
   });
+
+  $( "#save" ).click(function() {
+    $.post("/api/settings/timing",
+        {
+            timingOption1: $("#optionscheckboxs1").is(':checked'),
+            timingOption2: $("#optionscheckboxs2").is(':checked'),
+            timingOption3: $("#optionscheckboxs3").is(':checked'),
+            timingOption4: $("#optionscheckboxs4").is(':checked'),
+            timingOption5: $("#optionscheckboxs5").is(':checked'),
+            secounds: $("#secounds").val(),
+            interval: $("#interval").val()
+        },
+        function(data, status){
+            console.log(data);
+            console.log(status);
+    });
+  });
 }
 
 function despensing() {
@@ -712,7 +771,6 @@ function despensing() {
                             <div class="input-group-addon">ml</div>
                           </div>
                         </div>
-                        <button type="submit" class="btn main-color">Save</button>
                       </form>
                       <br>
                       <p>Grow Amount:</p>
@@ -725,7 +783,6 @@ function despensing() {
                             <div class="input-group-addon">ml</div>
                           </div>
                         </div>
-                        <button type="submit" class="btn main-color">Save</button>
                       </form>
                       <br>
                       <p>Bloom Amount:</p>
@@ -738,7 +795,6 @@ function despensing() {
                             <div class="input-group-addon">ml</div>
                           </div>
                         </div>
-                        <button type="submit" class="btn main-color">Save</button>
                       </form>
                       <br>
                       <h5>Timeing:</h5>
@@ -749,13 +805,13 @@ function despensing() {
                           <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                          <li><a href="#">Monday</a></li>
-                          <li><a href="#">Tuesday</a></li>
-                          <li><a href="#">Wendsay</a></li>
-                          <li><a href="#">Thursday</a></li>
-                          <li><a href="#">Friday</a></li>
-                          <li><a href="#">Saturday</a></li>
-                          <li><a href="#">Sunday</a></li>
+                          <li><a href="#" id="day1">Monday</a></li>
+                          <li><a href="#" id="day2">Tuesday</a></li>
+                          <li><a href="#" id="day3">Wendsay</a></li>
+                          <li><a href="#" id="day4">Thursday</a></li>
+                          <li><a href="#" id="day5">Friday</a></li>
+                          <li><a href="#" id="day6">Saturday</a></li>
+                          <li><a href="#" id="day7">Sunday</a></li>
                         </ul>
                       </div>
                       <br>
@@ -766,32 +822,33 @@ function despensing() {
                           <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                          <li><a href="#">12:00 AM</a></li>
-                          <li><a href="#">1:00 AM</a></li>
-                          <li><a href="#">2:00 AM</a></li>
-                          <li><a href="#">3:00 AM</a></li>
-                          <li><a href="#">4:00 AM</a></li>
-                          <li><a href="#">5:00 AM</a></li>
-                          <li><a href="#">6:00 AM</a></li>
-                          <li><a href="#">7:00 AM</a></li>
-                          <li><a href="#">8:00 AM</a></li>
-                          <li><a href="#">9:00 AM</a></li>
-                          <li><a href="#">10:00 AM</a></li>
-                          <li><a href="#">11:00 AM</a></li>
-                          <li><a href="#">12:00 PM</a></li>
-                          <li><a href="#">1:00 PM</a></li>
-                          <li><a href="#">2:00 PM</a></li>
-                          <li><a href="#">3:00 PM</a></li>
-                          <li><a href="#">4:00 PM</a></li>
-                          <li><a href="#">5:00 PM</a></li>
-                          <li><a href="#">6:00 PM</a></li>
-                          <li><a href="#">7:00 PM</a></li>
-                          <li><a href="#">8:00 PM</a></li>
-                          <li><a href="#">9:00 PM</a></li>
-                          <li><a href="#">10:00 PM</a></li>
-                          <li><a href="#">11:00 PM</a></li>
+                          <li><a href="#" id="time1">12:00 AM</a></li>
+                          <li><a href="#" id="time2">1:00 AM</a></li>
+                          <li><a href="#" id="time3">2:00 AM</a></li>
+                          <li><a href="#" id="time4">3:00 AM</a></li>
+                          <li><a href="#" id="time5">4:00 AM</a></li>
+                          <li><a href="#" id="time6">5:00 AM</a></li>
+                          <li><a href="#" id="time7">6:00 AM</a></li>
+                          <li><a href="#" id="time8">7:00 AM</a></li>
+                          <li><a href="#" id="time9">8:00 AM</a></li>
+                          <li><a href="#" id="time10">9:00 AM</a></li>
+                          <li><a href="#" id="time11">10:00 AM</a></li>
+                          <li><a href="#" id="time12">11:00 AM</a></li>
+                          <li><a href="#" id="time13">12:00 PM</a></li>
+                          <li><a href="#" id="time14">1:00 PM</a></li>
+                          <li><a href="#" id="time15">2:00 PM</a></li>
+                          <li><a href="#" id="time16">3:00 PM</a></li>
+                          <li><a href="#" id="time17">4:00 PM</a></li>
+                          <li><a href="#" id="time18">5:00 PM</a></li>
+                          <li><a href="#" id="time19">6:00 PM</a></li>
+                          <li><a href="#" id="time20">7:00 PM</a></li>
+                          <li><a href="#" id="time21">8:00 PM</a></li>
+                          <li><a href="#" id="time22">9:00 PM</a></li>
+                          <li><a href="#" id="time23">10:00 PM</a></li>
+                          <li><a href="#" id="time24">11:00 PM</a></li>
                         </ul>
                       </div>
+                      <button class="btn main-color" id="saveCustom">Save</button>
                       <hr>
                       <h3>Presets:</h3>
                       <div class="checkbox">
@@ -818,7 +875,7 @@ function despensing() {
                           Every Day at 5:00 <strong>Not recomended!</strong>
                         </label>
                       </div>
-                      <button type="button" name="button" class="btn main-color" id="save">Save</button>
+                      <button type="button" name="button" class="btn main-color" id="savePresets">Save</button>
                       `;
 
   $.getJSON("/data/settings.json", function(data) {
@@ -840,6 +897,71 @@ function despensing() {
     if (json.nutrents.day == "day" && json.nutrents.time == "5:00 PM") {
       $("#optionscheckboxs4").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs4" value="option1"checked>');
     }
+  });
+
+  var time = null;
+  $( "#time1" ).click(function(e) {time = "12:00 AM"; e.preventDefault();});
+  $( "#time2" ).click(function(e) {time = "1:00 AM"; e.preventDefault();});
+  $( "#time3" ).click(function(e) {time = "2:00 AM"; e.preventDefault();});
+  $( "#time4" ).click(function(e) {time = "3:00 AM"; e.preventDefault();});
+  $( "#time5" ).click(function(e) {time = "4:00 AM"; e.preventDefault();});
+  $( "#time6" ).click(function(e) {time = "5:00 AM"; e.preventDefault();});
+  $( "#time7" ).click(function(e) {time = "6:00 AM"; e.preventDefault();});
+  $( "#time8" ).click(function(e) {time = "7:00 AM"; e.preventDefault();});
+  $( "#time9" ).click(function(e) {time = "8:00 AM"; e.preventDefault();});
+  $( "#time10" ).click(function(e) {time = "9:00 AM"; e.preventDefault();});
+  $( "#time11" ).click(function(e) {time = "10:00 AM"; e.preventDefault();});
+  $( "#time12" ).click(function(e) {time = "11:00 AM"; e.preventDefault();});
+  $( "#time13" ).click(function(e) {time = "12:00 PM"; e.preventDefault();});
+  $( "#time14" ).click(function(e) {time = "1:00 PM"; e.preventDefault();});
+  $( "#time15" ).click(function(e) {time = "2:00 PM"; e.preventDefault();});
+  $( "#time16" ).click(function(e) {time = "3:00 PM"; e.preventDefault();});
+  $( "#time17" ).click(function(e) {time = "4:00 PM"; e.preventDefault();});
+  $( "#time18" ).click(function(e) {time = "5:00 PM"; e.preventDefault();});
+  $( "#time19" ).click(function(e) {time = "6:00 PM"; e.preventDefault();});
+  $( "#time20" ).click(function(e) {time = "7:00 PM"; e.preventDefault();});
+  $( "#time21" ).click(function(e) {time = "8:00 PM"; e.preventDefault();});
+  $( "#time22" ).click(function(e) {time = "9:00 PM"; e.preventDefault();});
+  $( "#time23" ).click(function(e) {time = "10:00 PM"; e.preventDefault();});
+  $( "#time24").click(function(e) {time = "11:00 PM"; e.preventDefault();});
+
+  var day = null;
+  $( "#day1" ).click(function(e) {day = "Monday"; e.preventDefault();});
+  $( "#day2" ).click(function(e) {day = "Tuesday"; e.preventDefault();});
+  $( "#day3" ).click(function(e) {day = "Wendsay"; e.preventDefault();});
+  $( "#day4" ).click(function(e) {day = "Thursday"; e.preventDefault();});
+  $( "#day5" ).click(function(e) {day = "Friday"; e.preventDefault();});
+  $( "#day6" ).click(function(e) {day = "Saturday"; e.preventDefault();});
+  $( "#day7" ).click(function(e) {day = "Sunday"; e.preventDefault();});
+
+
+  $( "#saveCustom" ).click(function() {
+    $.post("/api/settings/despensing",
+        {
+            flora: $("#floraAmount").val(),
+            bloom: $("#bloomAmount").val(),
+            grow: $("#growAmount").val(),
+            time: time,
+            day: day
+        },
+        function(data, status){
+            console.log(data);
+            console.log(status);
+    });
+  });
+
+  $( "#savePresets" ).click(function() {
+    $.post("/api/settings/despensing",
+        {
+            option1: $("#optionscheckboxs1").is(':checked'),
+            option2: $("#optionscheckboxs2").is(':checked'),
+            option3: $("#optionscheckboxs3").is(':checked'),
+            option4: $("#optionscheckboxs4").is(':checked'),
+        },
+        function(data, status){
+            console.log(data);
+            console.log(status);
+    });
   });
 }
 
@@ -864,7 +986,7 @@ function ph() {
                             <div class="input-group-addon"></div>
                           </div>
                         </div>
-                        <button type="submit" class="btn main-color">Save</button>
+                        <button type="submit" class="btn main-color" id="save">Save</button>
                       </form>
                       <br>
                       `;
@@ -872,5 +994,16 @@ function ph() {
   $.getJSON("/data/settings.json", function(data) {
     var json = data;
     $("#phTarget").html(json.phTarget);
+  });
+
+  $( "#save" ).click(function() {
+    $.post("/api/settings/ph",
+        {
+            ph: $("#phAmount").val()
+        },
+        function(data, status){
+            console.log(data);
+            console.log(status);
+    });
   });
 }

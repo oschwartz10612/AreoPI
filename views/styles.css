@@ -113,10 +113,13 @@ header p {
   width: 75px;
 }
 #time {
-  width: 58px;
+  width: 70px;
 }
 #secounds {
   width: 90px;
+}
+#saveCustom {
+  margin-top: 10px;
 }
 
 @media (max-width: 767px) {
