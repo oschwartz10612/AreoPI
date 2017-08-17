@@ -610,7 +610,7 @@ function wifi() {
                       <hr>
                       <h3>Wifi SSID and password</h3>
                       <p>Please enter you new network SSID and password.</p>
-                      <div class="alert alert-warning" role="alert"><strong>Please Note:</strong> This is intended to update your network information. Upon clicking submit, your pi's network will change.</div>
+                      <div class="alert alert-warning" role="alert"><strong>Please Note:</strong> This is intended to update your network information. Upon clicking submit, your pi's network will attempt to change.</div>
                       <form class="form" action="/" method="post">
                         <div class="form-group">
                           <label for="ssid">SSID</label>
