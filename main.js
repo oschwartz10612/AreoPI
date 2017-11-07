@@ -147,46 +147,26 @@ function dashboard() {
     var myChart = new Chart(ctx, {
       type: 'line',
       data: {
+        labels: lables,
         datasets: [{
-          data: data.water.tank1,
-          label: 'Tank One',
-
-          // This binds the dataset to the left y axis
-          yAxisID: 'left-y-axis',
+          label: 'Tank',
+          data: data.tempatures,
+          fill: false,
           backgroundColor: [
             '#1B4965',
           ],
           borderColor: [
             '#133549',
           ],
-          fill: false
-        }, {
-          data: data.water.tank2,
-          label: 'Tank Two',
-
-          // This binds the dataset to the right y axis
-          yAxisID: 'right-y-axis',
-
-          backgroundColor: [
-            '#42CAFD',
-          ],
-          borderColor: [
-            '#236E89',
-          ],
-          fill: false
-        }],
-        labels: lables
+          borderWidth: 1
+        }]
       },
       options: {
         scales: {
           yAxes: [{
-            id: 'left-y-axis',
-            type: 'linear',
-            position: 'left'
-          }, {
-            id: 'right-y-axis',
-            type: 'linear',
-            position: 'right'
+            ticks: {
+              beginAtZero: true
+            }
           }]
         }
       }
@@ -389,13 +369,9 @@ function viewWater() {
   heading.innerHTML = 'Water Levals';
   var content = document.getElementById('content');
   content.innerHTML = `
-                        <h3 class="text-center">Tank One:</h3>
+                        <h3 class="text-center">Tank:</h3>
                         <div class="progress">
                           <div id="tank1" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <h3 class="text-center">Tank Two:</h3>
-                        <div class="progress">
-                          <div id="tank2" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <canvas id="myChart" width="300" height="150"></canvas>
                         <a href="/settings" class="btn main-color" id="manageNotifcations"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Manage Notifcations</a>
@@ -404,53 +380,31 @@ function viewWater() {
   $.getJSON("/data/data.json", function(data) {
     var tank1 = (data.water.tank1Current - 0) * (100 - 0) / (1000 - 0) + 0; //Need to make a settings and json value for min and max in tank
     $("#tank1").css("width", tank1+"%");
-    var tank2 = (data.water.tank2Current - 0) * (100 - 0) / (1000 - 0) + 0; //Need to make a settings and json value for min and max in tank
-    $("#tank2").css("width", tank2+"%")
 
     var ctx = document.getElementById("myChart");
     var myChart = new Chart(ctx, {
       type: 'line',
       data: {
+        labels: lables,
         datasets: [{
-          data: data.water.tank1,
-          label: 'Tank One',
-
-          // This binds the dataset to the left y axis
-          yAxisID: 'left-y-axis',
+          label: 'Tank',
+          data: data.tempatures,
+          fill: false,
           backgroundColor: [
             '#1B4965',
           ],
           borderColor: [
             '#133549',
           ],
-          fill: false
-        }, {
-          data: data.water.tank2,
-          label: 'Tank Two',
-
-          // This binds the dataset to the right y axis
-          yAxisID: 'right-y-axis',
-
-          backgroundColor: [
-            '#42CAFD',
-          ],
-          borderColor: [
-            '#236E89',
-          ],
-          fill: false
-        }],
-        labels: lables
+          borderWidth: 1
+        }]
       },
       options: {
         scales: {
           yAxes: [{
-            id: 'left-y-axis',
-            type: 'linear',
-            position: 'left'
-          }, {
-            id: 'right-y-axis',
-            type: 'linear',
-            position: 'right'
+            ticks: {
+              beginAtZero: true
+            }
           }]
         }
       }
@@ -470,14 +424,14 @@ function notifcations() {
                       <hr>
                       <h3>Notifcation Email and Name</h3>
                       <p>Please enter an email address to recive notifications from your system</p>
-                      <form class="form" action="/" method="post">
+                      <form class="form">
                         <div class="form-group">
                           <label for="name">Name</label>
-                          <input type="text" class="form-control" id="name" placeholder="Name">
+                          <input type="text" class="form-control" id="NotifcationName" placeholder="Name">
                         </div>
                         <div class="form-group">
                           <label for="email">Email</label>
-                          <input type="email" class="form-control" id="email" placeholder="Email Address">
+                          <input type="email" class="form-control" id="NotifcationEmail" placeholder="Email Address">
                         </div>
                         <button type="submit" class="btn btn-default main-color" id="saveInfo">Update Information</button>
                       </form>
@@ -487,12 +441,6 @@ function notifcations() {
                         <label>
                           <input type="checkbox" value="option1" id="waterLevals1">
                           Water levals in tank 1
-                        </label>
-                      </div>
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="option2" id="waterLevals2">
-                          Water levals in tank 2
                         </label>
                       </div>
                       <div class="checkbox">
@@ -533,13 +481,6 @@ function notifcations() {
       $("#waterLevals1").wrap('<input type="checkbox" value="" id="waterLevals1">');
     }
 
-    if (json.notifcations.notifcationOption2) {
-      $("#waterLevals2").wrap('<input type="checkbox" value="" id="waterLevals2" checked>');
-    }
-    else {
-      $("#waterLevals2").wrap('<input type="checkbox" value="" id="waterLevals2">');
-    }
-
     if (json.notifcations.notifcationOption3) {
       $("#temps").wrap('<input type="checkbox" value="" id="temps" checked>');
     }
@@ -573,8 +514,8 @@ function notifcations() {
     e.preventDefault();
     $.post("/api/settings/notifcations",
         {
-            name: $("#name").val(),
-            email: $("#email").val()
+            name: $("#NotifcationName").val(),
+            email: $("#NotifcationEmail").val()
         },
         function(data, status){
             console.log(data);
@@ -587,7 +528,6 @@ function notifcations() {
     $.post("/api/settings/notifcations",
         {
             notifcationOption1: $("#waterLevals1").is(':checked'),
-            notifcationOption2: $("#waterLevals2").is(':checked'),
             notifcationOption3: $("#temps").is(':checked'),
             notifcationOption4: $("#ph").is(':checked'),
             notifcationOption5: $("#despensing").is(':checked'),
@@ -684,12 +624,6 @@ function timing() {
                       </div>
                       <div class="checkbox">
                       <label>
-                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs3" value="option3">
-                          Morning and Night
-                        </label>
-                      </div>
-                      <div class="checkbox">
-                      <label>
                         <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs4" value="option4">
                           All Day
                         </label>
@@ -709,19 +643,13 @@ function timing() {
       $("#currentMinutes").html(json.sprayer.sprayInterval);
       $("#currentTime").html(json.sprayer.sprayTime);
     }
-    if (json.sprayer.morning == true && json.sprayer.night == true) {
-      $("#currentInfo").html("Spray every morning and night from 5 to 8");
-      $("#optionscheckboxs3").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs3" value="option1" checked>');
-    }
-    else {
-      if (json.sprayer.morning) {
+    if (json.sprayer.morning) {
         $("#currentInfo").html("Spray every morning from 5 to 8");
         $("#optionscheckboxs1").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs1" value="option1" checked>');
-      }
-      if (json.sprayer.night) {
+    }
+    if (json.sprayer.night) {
         $("#currentInfo").html("Spray every night from 5 to 8");
         $("#optionscheckboxs2").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs2" value="option1" checked>');
-      }
     }
     if (json.sprayer.day) {
       $("#currentInfo").html("Spray all day");

@@ -27,82 +27,118 @@ app.post('/api/settings/timing', function(req, res) {
   console.log("----------------------");
   console.log(req.body.timingOption1);
   console.log(req.body.timingOption2);
-  console.log(req.body.timingOption3);
   console.log(req.body.timingOption4);
   console.log(req.body.timingOption5);
-  if (req.body.secounds > 0) {
-    console.log(req.body.secounds);
-  }
-  if (req.body.interval > 0) {
-    console.log(req.body.interval);
-  }
-  // var file = __dirname + '/data/settings.json';
-  // jsonfile.readFile(file, function(err, obj) {
-  //   obj.sprayer = "on";
-  //   jsonfile.writeFile(file, obj);
-  // });
+  console.log(req.body.interval);
+  console.log(req.body.secounds);
+  var file = __dirname + '/data/settings.json';
+  jsonfile.readFile(file, function(err, obj) {
+    obj.sprayer.morning = (req.body.timingOption1 === "true");
+    obj.sprayer.night = (req.body.timingOption2 === "true");
+    obj.sprayer.day = (req.body.timingOption4 === "true");
+    if (req.body.secounds > 0) {
+      obj.sprayer.sprayTime = parseInt(req.body.secounds);
+    }
+    if (req.body.interval > 0) {
+      obj.sprayer.sprayInterval = parseInt(req.body.interval);
+    }
+    jsonfile.writeFile(file, obj);
+  });
 });
 
 app.post('/api/settings/despensing', function(req, res) {
   console.log("----------------------");
-  console.log(req.body.option1);
-  console.log(req.body.option2);
-  console.log(req.body.option3);
-  console.log(req.body.option4);
-  if (req.body.flora > 0) {
-    console.log(req.body.flora);
-  }
-  if (req.body.grow > 0) {
-    console.log(req.body.grow);
-  }
-  if (req.body.bloom > 0) {
-    console.log(req.body.bloom);
-  }
-  if (req.body.time != "") {
-    console.log(req.body.time);
-  }
-  if (req.body.day != "") {
-    console.log(req.body.day);
-  }
-  // var file = __dirname + '/data/settings.json';
-  // jsonfile.readFile(file, function(err, obj) {
-  //   obj.sprayer = "on";
-  //   jsonfile.writeFile(file, obj);
-  // });
+  var file = __dirname + '/data/settings.json';
+  jsonfile.readFile(file, function(err, obj) {
+    if (req.body.flora > 0) {
+      console.log(req.body.flora);
+      obj.nutrents.floraAmount = parseInt(req.body.flora);
+    }
+    if (req.body.grow > 0) {
+      console.log(req.body.grow);
+      obj.nutrents.growAmount = parseInt(req.body.grow);
+    }
+    if (req.body.bloom > 0) {
+      console.log(req.body.bloom);
+      obj.nutrents.bloomAmount = parseInt(req.body.bloom);
+    }
+    if (req.body.time != undefined) {
+      console.log(req.body.time);
+      obj.nutrents.time = req.body.time;
+    }
+    if (req.body.day != undefined) {
+      console.log(req.body.day);
+      obj.nutrents.day = req.body.day;
+    }
+
+    if (req.body.option1 == "true") {
+      console.log(req.body.option1);
+      obj.nutrents.time = "5:00 PM";
+      obj.nutrents.day = "Sunday";
+    }
+    if (req.body.option2 == "true") {
+      console.log(req.body.option2);
+      obj.nutrents.time = "5:00 PM";
+      obj.nutrents.day = "Wensday";
+    }
+    if (req.body.option3 == "true") {
+      console.log(req.body.option3);
+      obj.nutrents.time = "5:00 PM";
+      obj.nutrents.day = "Wensday, Sunday";
+    }
+    if (req.body.option4 == "true") {
+      console.log(req.body.option4);
+      obj.nutrents.time = "5:00 PM";
+      obj.nutrents.day = "all";
+    }
+    jsonfile.writeFile(file, obj);
+  });
 });
 
 app.post('/api/settings/ph', function(req, res) {
   console.log(req.body.ph);
-  // var file = __dirname + '/data/settings.json';
-  // jsonfile.readFile(file, function(err, obj) {
-  //   obj.sprayer = "on";
-  //   jsonfile.writeFile(file, obj);
-  // });
-});
-
-app.post('/api/settings/wifi', function(req, res) {
-  console.log(req.body.ssid);
-  console.log(req.body.password);
-  // var file = __dirname + '/data/settings.json';
-  // jsonfile.readFile(file, function(err, obj) {
-  //   obj.sprayer = "on";
-  //   jsonfile.writeFile(file, obj);
-  // });
+  var file = __dirname + '/data/settings.json';
+  jsonfile.readFile(file, function(err, obj) {
+    obj.phTarget = parseInt(req.body.ph);
+    jsonfile.writeFile(file, obj);
+  });
 });
 
 app.post('/api/settings/notifcations', function(req, res) {
   console.log("------------------");
   console.log(req.body.notifcationOption1);
-  console.log(req.body.notifcationOption2);
   console.log(req.body.notifcationOption3);
   console.log(req.body.notifcationOption4);
   console.log(req.body.notifcationOption5);
   console.log(req.body.notifcationOption6);
-  // var file = __dirname + '/data/settings.json';
-  // jsonfile.readFile(file, function(err, obj) {
-  //   obj.sprayer = "on";
-  //   jsonfile.writeFile(file, obj);
-  // });
+  console.log(req.body.name);
+  console.log(req.body.email);
+  var file = __dirname + '/data/settings.json';
+  jsonfile.readFile(file, function(err, obj) {
+    obj.notifcations.notifcationOption1 = (req.body.notifcationOption1 === "true");
+    obj.notifcations.notifcationOption3 = (req.body.notifcationOption3 === "true");
+    obj.notifcations.notifcationOption4 = (req.body.notifcationOption4 === "true");
+    obj.notifcations.notifcationOption5 = (req.body.notifcationOption5 === "true");
+    obj.notifcations.notifcationOption6 = (req.body.notifcationOption6 === "true");
+    if(req.body.name != "") {
+      obj.notifcations.notificationName = req.body.name;
+    }
+    if(req.body.email != "") {
+      obj.notifcations.notificationEmail = req.body.email;
+    }
+    jsonfile.writeFile(file, obj);
+  });
+});
+
+app.post('/api/settings/wifi', function(req, res) {
+  console.log(req.body.ssid);
+  console.log(req.body.password);
+  var file = __dirname + '/data/settings.json';
+  jsonfile.readFile(file, function(err, obj) {
+    obj.wifi.newSSID = req.body.ssid;
+    obj.wifi.newPSK = req.body.password;
+    jsonfile.writeFile(file, obj);
+  });
 });
 
 app.post('/api/sprayer', function(req, res) {
