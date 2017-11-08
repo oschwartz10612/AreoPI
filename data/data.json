@@ -38,12 +38,6 @@
       ],
       "tankCurrent":900
    },
-   "sprayer":"on",
-   "nextSpray":1,
-   "growthSeason":{
-      "bloom":50,
-      "grow":50,
-      "sprout":50,
-      "plant":50
-   }
+   "sprayer":"off",
+   "nextSpray":30
 }

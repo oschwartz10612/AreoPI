@@ -144,6 +144,7 @@ app.post('/api/settings/wifi', function(req, res) {
 app.post('/api/sprayer', function(req, res) {
   if (req.body.sprayer == "on") {
     console.log("Turn on Sprayer");
+    port.write("sprayer");
   }
 });
 
@@ -169,3 +170,29 @@ app.get('/settings', function(req, res) {
 app.listen(4000, function() {
   console.log('Listening on port 4000!');
 });
+
+//------End Website------//
+
+const SerialPort = require('serialport');
+const port = new SerialPort('/dev/cu.usbmodem14241');
+const Readline = SerialPort.parsers.Readline;
+const parser = new Readline();
+port.pipe(parser);
+
+port.on('open', () => {
+  console.log('Port Opened');
+});
+
+parser.on('data', function(data) {
+  var obj = JSON.parse(data);
+  if (obj.data = "test") {
+    console.log(obj.payload);
+  }
+});
+
+//------Main Process------//
+var counter = 0;
+function intervalFunc() {
+
+}
+setInterval(intervalFunc, 500);

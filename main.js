@@ -2,11 +2,7 @@ window.onload = load();
 
 function load() {
   $.getJSON("/data/data.json", function(data) {
-    $("#bloomProgress").css("width", data.growthSeason.bloom+"%");
-    $("#growProgress").css("width", data.growthSeason.grow+"%");
-    $("#plantProgress").css("width", data.growthSeason.sprout+"%");
-    $("#sproutProgress").css("width", data.growthSeason.plant+"%");
-    if (data.sprayer == "Off") {
+    if (data.sprayer == "off") {
       $("#sprayerAlert").addClass("alert-danger");
     }
     $("#dashboardOnOff").html(data.sprayer);
