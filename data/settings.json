@@ -10,8 +10,9 @@
       "floraAmount":10,
       "growAmount":10,
       "bloomAmount":10,
-      "day":"Monday",
-      "time":"11:00 AM"
+      "day":"Sunday",
+      "time":"11:00 AM",
+      "multiplyer":100
    },
    "phTarget":7,
    "notifcations":{
@@ -29,5 +30,10 @@
       "oldPSK":"yourPSK",
       "newSSID":"newSSID",
       "newPSK":"newPSK"
+   },
+   "serial":{
+     "pumps":"/dev/cu.usbmodem14241",
+     "ph":"/dev/cu.usbmodem14241",
+     "ec_temp":"/dev/cu.usbmodem14241"
    }
 }

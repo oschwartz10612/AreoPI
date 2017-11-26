@@ -170,29 +170,101 @@ app.get('/settings', function(req, res) {
 app.listen(4000, function() {
   console.log('Listening on port 4000!');
 });
-
 //------End Website------//
 
+  //------Serial------//
 const SerialPort = require('serialport');
-const port = new SerialPort('/dev/cu.usbmodem14241');
-const Readline = SerialPort.parsers.Readline;
-const parser = new Readline();
-port.pipe(parser);
 
-port.on('open', () => {
-  console.log('Port Opened');
-});
+const pumps = new SerialPort('/dev/cu.usbmodem14241');
+const Readline = SerialPort.parsers.Readline;;
+const pumpsparser = new Readline();
+pumps.pipe(pumpsparser);
 
-parser.on('data', function(data) {
-  var obj = JSON.parse(data);
-  if (obj.data = "test") {
-    console.log(obj.payload);
-  }
+pumps.on('open', () => {
+  console.log('Port Opened With Pumps');
 });
+//-----End Serial------//
 
 //------Main Process------//
-var counter = 0;
+var triggered = false;
 function intervalFunc() {
+  var file = __dirname + '/data/settings.json';
+  jsonfile.readFile(file, function(err, obj) {
 
+    //------Pumps------//
+    if (obj.nutrents.day == getDay() && obj.nutrents.time == getHour() && triggered == false) {
+      triggered = true;
+      pumps.write("{\"pump\":\"GROW\",\"sleep\":" + obj.nutrents.growAmount * obj.nutrents.multiplyer + "}");
+
+      let sent1 = new Promise((resolve, reject) => {
+        pumpsparser.on('data', function() {
+          resolve("Success!");
+        });
+      });
+      sent1.then((successMessage) => {
+        console.log("OK");
+        pumps.write("{\"pump\":\"FLORA\",\"sleep\":" + obj.nutrents.floraAmount * obj.nutrents.multiplyer + "}");
+
+        let sent2 = new Promise((resolve, reject) => {
+          pumpsparser.on('data', function() {
+            resolve("Success!");
+          });
+        });
+        sent2.then((successMessage) => {
+          console.log("OK");
+          pumps.write("{\"pump\":\"BLOOM\",\"sleep\":" + obj.nutrents.bloomAmount * obj.nutrents.multiplyer + "}");
+        });
+      });
+    }
+    if (obj.nutrents.day != getDay() || obj.nutrents.time != getHour()) {
+      triggered = false;
+    }
+    //------End Pumps------//
+  });
 }
-setInterval(intervalFunc, 500);
+setInterval(intervalFunc, 10000);
+//------End Main Process------//
+
+function getHour() {
+  var d = new Date();
+  var hour = new Array(24);
+  hour[0] = "12:00 AM";
+  hour[1] = "1:00 AM";
+  hour[2] = "2:00 AM";
+  hour[3] = "3:00 AM";
+  hour[4] = "4:00 AM";
+  hour[5] = "5:00 AM";
+  hour[6] = "6:00 AM";
+  hour[7] = "7:00 AM";
+  hour[8] = "8:00 AM";
+  hour[9] = "9:00 AM";
+  hour[10] = "10:00 AM";
+  hour[11] = "11:00 AM";
+
+  hour[12] = "12:00 PM";
+  hour[13] = "1:00 PM";
+  hour[14] = "2:00 PM";
+  hour[15] = "3:00 PM";
+  hour[16] = "4:00 PM";
+  hour[17] = "5:00 PM";
+  hour[18] = "6:00 PM";
+  hour[19] = "7:00 PM";
+  hour[20] = "8:00 PM";
+  hour[21] = "9:00 PM";
+  hour[22] = "10:00 PM";
+  hour[23] = "11:00 PM";
+  return hour[d.getHours()];
+}
+
+function getDay(day) {
+  var d = new Date();
+  var weekday = new Array(7);
+  weekday[0] = "Sunday";
+  weekday[1] = "Monday";
+  weekday[2] = "Tuesday";
+  weekday[3] = "Wednesday";
+  weekday[4] = "Thursday";
+  weekday[5] = "Friday";
+  weekday[6] = "Saturday";
+  return weekday[d.getDay()];
+}
