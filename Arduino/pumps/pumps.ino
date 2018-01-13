@@ -1,10 +1,10 @@
 #include <ArduinoJson.h>
 
-#define MAIN 6
-#define FLORA 5
-#define GROW 4
-#define BLOOM 3
-#define PHUP 2
+#define MAIN 13  
+#define FLORA 6
+#define GROW 5
+#define BLOOM 4
+#define PHUP 3
 
 char cmd[50];
 
@@ -14,6 +14,12 @@ void setup() {
   pinMode(GROW, OUTPUT);
   pinMode(BLOOM, OUTPUT);
   pinMode(PHUP, OUTPUT);
+
+  digitalWrite(MAIN, HIGH);
+  digitalWrite(FLORA, HIGH);
+  digitalWrite(BLOOM, HIGH);
+  digitalWrite(GROW, HIGH);
+  digitalWrite(PHUP, HIGH);
 
   Serial.begin(9600);
 }
@@ -28,35 +34,35 @@ void loop() {
     int sleep = root["sleep"];
 
     if(pump == "MAIN") {
-      digitalWrite(MAIN, HIGH);
+      digitalWrite(MAIN, LOW);
       if(sleep != 0) {
         delay(sleep);
-        digitalWrite(MAIN, LOW);
+        digitalWrite(MAIN, HIGH);
       }
       Serial.println("OK");
     }
     if(pump == "FLORA") {
-      digitalWrite(FLORA, HIGH);
-      delay(sleep);
       digitalWrite(FLORA, LOW);
+      delay(sleep);
+      digitalWrite(FLORA, HIGH);
       Serial.println("OK");
     }
     if(pump == "BLOOM") {
-      digitalWrite(BLOOM, HIGH);
-      delay(sleep);
       digitalWrite(BLOOM, LOW);
+      delay(sleep);
+      digitalWrite(BLOOM, HIGH);
       Serial.println("OK");
     }
     if(pump == "GROW") {
-      digitalWrite(GROW, HIGH);
-      delay(sleep);
       digitalWrite(GROW, LOW);
+      delay(sleep);
+      digitalWrite(GROW, HIGH);
       Serial.println("OK");
     }
     if(pump == "PHUP") {
-      digitalWrite(PHUP, HIGH);
-      delay(sleep);
       digitalWrite(PHUP, LOW);
+      delay(sleep);
+      digitalWrite(PHUP, HIGH);
       Serial.println("OK");
     }
   }

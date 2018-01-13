@@ -172,26 +172,70 @@ app.listen(4000, function() {
 });
 //------End Website------//
 
-  //------Serial------//
+//------Serial------//
+//------Pumps------//
 const SerialPort = require('serialport');
+const Readline = SerialPort.parsers.Readline;
 
-const pumps = new SerialPort('/dev/cu.usbmodem14241');
-const Readline = SerialPort.parsers.Readline;;
+const pumps = new SerialPort('/dev/cu.usbmodem14241'); //Change to match correct port
 const pumpsparser = new Readline();
 pumps.pipe(pumpsparser);
 
 pumps.on('open', () => {
   console.log('Port Opened With Pumps');
+  setInterval(pumpsProcess, 10000);
+  console.log('Pumps Process Started');
+});
+
+pumps.on('close', () => {
+  console.log('Port Closed With Pumps');
+  clearInterval(pumpsProcess);
+  console.log('Error: Pumps Process Ended! Reconnect and restart!');
+});
+
+//------Ec------//
+const ec = new SerialPort('/dev/cu.usbmodem14241'); //Change to match correct port
+const ecparser = new Readline();
+ec.pipe(pumpsparser);
+
+ec.on('open', () => {
+  console.log('Port Opened With Ec Sensor');
+  setInterval(ecProcess, 10000);
+  console.log('Ec Process Started');
+});
+
+ec.on('close', () => {
+  console.log('Port Closed With Ec Sensor');
+  clearInterval(ecProcess);
+  console.log('Error: Ec Process Ended! Reconnect and restart!');
+});
+
+ecparser.on('data', function(data) {
+  console.log(data);
+  var ecData = JSON.parse(data);
+
+  var lastDay;
+  if (lastDay != d.getDay()) {
+    var file = __dirname + '/data/data.json';
+    jsonfile.readFile(file, function(err, obj) {
+
+      var d = new Date();
+      obj.ec[d.getDay()] = ecData.ec;
+      obj.tempatures[d.getDay()] = ecData.tempature;
+
+      lastDay = d.getDay();
+
+      jsonfile.writeFile(file, obj);
+    });
+  }
 });
 //-----End Serial------//
 
-//------Main Process------//
+//------Begin Pumps------//
 var triggered = false;
-function intervalFunc() {
+function pumpsProcess() {
   var file = __dirname + '/data/settings.json';
   jsonfile.readFile(file, function(err, obj) {
-
-    //------Pumps------//
     if (obj.nutrents.day == getDay() && obj.nutrents.time == getHour() && triggered == false) {
       triggered = true;
       pumps.write("{\"pump\":\"GROW\",\"sleep\":" + obj.nutrents.growAmount * obj.nutrents.multiplyer + "}");
@@ -219,11 +263,15 @@ function intervalFunc() {
     if (obj.nutrents.day != getDay() || obj.nutrents.time != getHour()) {
       triggered = false;
     }
-    //------End Pumps------//
   });
 }
-setInterval(intervalFunc, 10000);
-//------End Main Process------//
+//------End Pumps------//
+
+//------Begin Ec------//
+function ecProcess() {
+
+}
+//------End Ec------//
 
 function getHour() {
   var d = new Date();
