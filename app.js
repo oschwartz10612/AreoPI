@@ -177,7 +177,7 @@ app.listen(4000, function() {
 const SerialPort = require('serialport');
 const Readline = SerialPort.parsers.Readline;
 
-const pumps = new SerialPort('/dev/cu.usbmodem14241'); //Change to match correct port
+const pumps = new SerialPort('/dev/ttyUSB0'); //Change to match correct port
 const pumpsparser = new Readline();
 pumps.pipe(pumpsparser);
 
@@ -194,7 +194,7 @@ pumps.on('close', () => {
 });
 
 //------Ec------//
-const ec = new SerialPort('/dev/cu.usbmodem14241'); //Change to match correct port
+const ec = new SerialPort('/dev/ttyUSB1'); //Change to match correct port
 const ecparser = new Readline();
 ec.pipe(pumpsparser);
 
