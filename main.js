@@ -52,7 +52,7 @@ function dashboard() {
                         <h3 class="text-center">Water Levals</h3>
                         <canvas id="myWater" width="200" height="100"></canvas>
                         `;
-  $.getJSON("data.json", function(data) {
+  $.getJSON("/data/data.json", function(data) {
     var ctx = document.getElementById("myPH");
     var myPH = new Chart(ctx, {
       type: 'line',
@@ -60,7 +60,7 @@ function dashboard() {
         labels: lables,
         datasets: [{
           label: 'PH value',
-          data: data.ph,
+          data: [1,2,3,4,5,6,7],
           fill: false,
           backgroundColor: [
             '#A31621',
