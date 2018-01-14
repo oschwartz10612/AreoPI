@@ -5,7 +5,7 @@
 #define GROW 5
 #define BLOOM 4
 #define PHUP 3
-
+ 
 char cmd[50];
 
 void setup() {

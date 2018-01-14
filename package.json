@@ -4,7 +4,7 @@
   "description": "A Raspberry Pi based web application to make controing your areoponics or hydroponics system easer.",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "npm app.js"
   },
   "author": "Owen Schwartz",
   "license": "ISC",

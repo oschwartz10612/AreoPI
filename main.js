@@ -52,7 +52,7 @@ function dashboard() {
                         <h3 class="text-center">Water Levals</h3>
                         <canvas id="myWater" width="200" height="100"></canvas>
                         `;
-  $.getJSON("/data/data.json", function(data) {
+  $.getJSON("data.json", function(data) {
     var ctx = document.getElementById("myPH");
     var myPH = new Chart(ctx, {
       type: 'line',
