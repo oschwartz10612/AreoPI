@@ -194,9 +194,9 @@ pumps.on('close', () => {
 });
 
 //------Ec------//
-const ec = new SerialPort('/dev/ttyUSB1'); //Change to match correct port
+const ec = new SerialPort('/dev/ttyUSB2'); //Change to match correct port
 const ecparser = new Readline();
-ec.pipe(pumpsparser);
+ec.pipe(ecparser);
 
 ec.on('open', () => {
   console.log('Port Opened With Ec Sensor');
@@ -221,13 +221,36 @@ ecparser.on('data', function(data) {
 
       var d = new Date();
       obj.ec[d.getDay()] = ecData.ec;
-      obj.tempatures[d.getDay()] = ecData.tempature;
+      obj.tempatures[d.getDay()] = ecData.tempature; //going to have to multiply below by the amount of space we have
+      obj.water.tank[d.getDay()] = ecData.tempature;
+      obj.water.tankCurrent = ecData.tempature;
 
       lastDay = d.getDay();
 
       jsonfile.writeFile(file, obj);
     });
   }
+});
+
+//-----PH-----//
+const ph = new SerialPort('/dev/ttyUSB1'); //Change to match correct port
+const phparser = new Readline();
+ph.pipe(phparser);
+
+ec.on('open', () => {
+  console.log('Port Opened With ph Sensor');
+  //setInterval(phProcess, 10000);
+  console.log('ph Process Started');
+});
+
+ec.on('close', () => {
+  console.log('Port Closed With ph Sensor');
+  clearInterval(phProcess);
+  console.log('Error: ph Process Ended! Reconnect and restart!');
+});
+
+phparser.on('data', function(data) {
+  console.log(data);
 });
 //-----End Serial------//
 
