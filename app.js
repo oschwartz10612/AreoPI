@@ -210,20 +210,22 @@ ec.on('close', () => {
   console.log('Error: Ec Process Ended! Reconnect and restart!');
 });
 
+var lastDay;
 ecparser.on('data', function(data) {
   console.log(data);
   var ecData = JSON.parse(data);
 
-  var lastDay;
+  var d = new Date();
+
   if (lastDay != d.getDay()) {
     var file = __dirname + '/data/data.json';
     jsonfile.readFile(file, function(err, obj) {
 
-      var d = new Date();
-      obj.ec[d.getDay()] = ecData.ec;
-      obj.tempatures[d.getDay()] = ecData.tempature; //going to have to multiply below by the amount of space we have
-      obj.water.tank[d.getDay()] = ecData.tempature;
-      obj.water.tankCurrent = ecData.tempature;
+
+      obj.ec[d.getDay()] = parseFloat(ecData.ec);
+      obj.tempatures[d.getDay()] = parseFloat(ecData.temperature); //going to have to multiply below by the amount of space we have
+      obj.water.tank[d.getDay()] = parseFloat(ecData.in);
+      obj.water.tankCurrent = parseFloat(ecData.in);
 
       lastDay = d.getDay();
 
@@ -233,13 +235,16 @@ ecparser.on('data', function(data) {
 });
 
 //-----PH-----//
-const ph = new SerialPort('/dev/ttyUSB1'); //Change to match correct port
-const phparser = new Readline();
-ph.pipe(phparser);
+const ph = new SerialPort('/dev/cu.usbmodem142311'); //Change to match correct port
+
+const ByteLength = SerialPort.parsers.ByteLength
+
+const phparser = ph.pipe(new ByteLength({length: 5}));
+phparser.on('data', console.log);
 
 ec.on('open', () => {
   console.log('Port Opened With ph Sensor');
-  //setInterval(phProcess, 10000);
+  setInterval(phProcess, 10000);
   console.log('ph Process Started');
 });
 
@@ -249,8 +254,25 @@ ec.on('close', () => {
   console.log('Error: ph Process Ended! Reconnect and restart!');
 });
 
+var lastDayph;
+
 phparser.on('data', function(data) {
-  console.log(data);
+  console.log(parseFloat(data));
+
+  var d = new Date();
+
+  if (lastDayph != d.getDay()) {
+    var file = __dirname + '/data/data.json';
+    jsonfile.readFile(file, function(err, obj) {
+
+      var d = new Date();
+      obj.ph[d.getDay()] = parseFloat(data);
+
+      lastDayph = d.getDay();
+
+      jsonfile.writeFile(file, obj);
+    });
+  }
 });
 //-----End Serial------//
 
@@ -294,7 +316,12 @@ function pumpsProcess() {
 function ecProcess() {
 
 }
-//------End Ec------//
+//------End ph------//
+
+function phProcess() {
+
+}
+//------End ph------//
 
 function getHour() {
   var d = new Date();
