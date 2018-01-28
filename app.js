@@ -143,19 +143,54 @@ app.post('/api/settings/wifi', function(req, res) {
 
 app.post('/api/sprayer', function(req, res) {
   if (req.body.sprayer == "on") {
-    console.log("Turn on Sprayer");
-    port.write("sprayer");
+    var file = __dirname + '/data/settings.json';
+    jsonfile.readFile(file, function(err, obj) {
+      console.log("Turn on Sprayer");
+      console.log("{\"pump\":\"MAIN\",\"sleep\":" + obj.sprayer.sprayTime + "}");
+      pumps.write("{\"pump\":\"MAIN\",\"sleep\":" + obj.sprayer.sprayTime + "}");
+    });
   }
 });
 
 app.post('/api/nutrents', function(req, res) {
-  console.log(req.body.flora);
   console.log(req.body.grow);
+  console.log(req.body.flora);
   console.log(req.body.bloom);
+
+  var file = __dirname + '/data/settings.json';
+  jsonfile.readFile(file, function(err, obj) {
+
+    pumps.write("{\"pump\":\"GROW\",\"sleep\":" + req.body.grow * obj.nutrents.multiplyer + "}");
+
+    let sent1 = new Promise((resolve, reject) => {
+      pumpsparser.on('data', function() {
+        resolve("Success!");
+      });
+    });
+    sent1.then((successMessage) => {
+      console.log("OK");
+      pumps.write("{\"pump\":\"FLORA\",\"sleep\":" + req.body.flora * obj.nutrents.multiplyer + "}");
+
+      let sent2 = new Promise((resolve, reject) => {
+        pumpsparser.on('data', function() {
+          resolve("Success!");
+        });
+      });
+      sent2.then((successMessage) => {
+        console.log("OK");
+        pumps.write("{\"pump\":\"BLOOM\",\"sleep\":" + req.body.bloom * obj.nutrents.multiplyer + "}");
+      });
+    });
+  });
 });
 
 app.post('/api/ph', function(req, res) {
   console.log(req.body.ph);
+
+  var file = __dirname + '/data/settings.json';
+  jsonfile.readFile(file, function(err, obj) {
+    pumps.write("{\"pump\":\"PHUP\",\"sleep\":" + req.body.ph * obj.nutrents.multiplyer + "}");
+  });
 });
 
 //Renderer:
@@ -177,7 +212,7 @@ app.listen(4000, function() {
 const SerialPort = require('serialport');
 const Readline = SerialPort.parsers.Readline;
 
-const pumps = new SerialPort('/dev/ttyUSB'); //Change to match correct port
+const pumps = new SerialPort('/dev/ttyUSB2'); //Change to match correct port
 const pumpsparser = new Readline();
 pumps.pipe(pumpsparser);
 

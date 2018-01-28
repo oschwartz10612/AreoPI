@@ -60,7 +60,7 @@ function dashboard() {
         labels: lables,
         datasets: [{
           label: 'PH value',
-          data: [1,2,3,4,5,6,7],
+          data: data.ph,
           fill: false,
           backgroundColor: [
             '#A31621',

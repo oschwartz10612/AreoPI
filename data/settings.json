@@ -4,7 +4,7 @@
       "night":false,
       "day":false,
       "sprayInterval":2314,
-      "sprayTime":1324
+      "sprayTime":1000
    },
    "nutrents":{
       "floraAmount":10,
