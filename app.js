@@ -177,7 +177,7 @@ app.listen(4000, function() {
 const SerialPort = require('serialport');
 const Readline = SerialPort.parsers.Readline;
 
-const pumps = new SerialPort('/dev/ttyUSB0'); //Change to match correct port
+const pumps = new SerialPort('/dev/ttyUSB'); //Change to match correct port
 const pumpsparser = new Readline();
 pumps.pipe(pumpsparser);
 
@@ -194,7 +194,7 @@ pumps.on('close', () => {
 });
 
 //------Ec------//
-const ec = new SerialPort('/dev/ttyUSB2'); //Change to match correct port
+const ec = new SerialPort('/dev/ttyUSB1'); //Change to match correct port
 const ecparser = new Readline();
 ec.pipe(ecparser);
 
@@ -235,20 +235,17 @@ ecparser.on('data', function(data) {
 });
 
 //-----PH-----//
-const ph = new SerialPort('/dev/cu.usbmodem142311'); //Change to match correct port
+const ph = new SerialPort('/dev/ttyUSB0'); //Change to match correct port
 
-const ByteLength = SerialPort.parsers.ByteLength
+const phparser = ph.pipe(new Readline({ delimiter: '\r' }));
 
-const phparser = ph.pipe(new ByteLength({length: 5}));
-phparser.on('data', console.log);
-
-ec.on('open', () => {
+ph.on('open', () => {
   console.log('Port Opened With ph Sensor');
   setInterval(phProcess, 10000);
   console.log('ph Process Started');
 });
 
-ec.on('close', () => {
+ph.on('close', () => {
   console.log('Port Closed With ph Sensor');
   clearInterval(phProcess);
   console.log('Error: ph Process Ended! Reconnect and restart!');
@@ -262,8 +259,9 @@ phparser.on('data', function(data) {
   var d = new Date();
 
   if (lastDayph != d.getDay()) {
-    var file = __dirname + '/data/data.json';
-    jsonfile.readFile(file, function(err, obj) {
+    if (parseFloat(data) != null) {
+      var file = __dirname + '/data/data.json';
+      jsonfile.readFile(file, function(err, obj) {
 
       var d = new Date();
       obj.ph[d.getDay()] = parseFloat(data);
@@ -272,6 +270,7 @@ phparser.on('data', function(data) {
 
       jsonfile.writeFile(file, obj);
     });
+   }
   }
 });
 //-----End Serial------//
