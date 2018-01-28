@@ -259,7 +259,7 @@ phparser.on('data', function(data) {
   var d = new Date();
 
   if (lastDayph != d.getDay()) {
-    if (parseFloat(data) != null) {
+    if (parseFloat(data) > 0) {
       var file = __dirname + '/data/data.json';
       jsonfile.readFile(file, function(err, obj) {
 
