@@ -7,7 +7,7 @@ app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
-app.use('/chart', express.static(__dirname + '/node_modules/chartjs/dist/'));
+app.use('/chart', express.static(__dirname + '/node_modules/chart.js/dist/'));
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/'));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use('/icon', express.static(__dirname + '/views/'));
