@@ -457,12 +457,6 @@ function notifcations() {
                           Despensing
                         </label>
                       </div>
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="option1" id="growth">
-                          Growth Season
-                        </label>
-                      </div>
                       <button type="button" name="button" class="btn main-color" id="save">Submit</button>
                       `;
 
@@ -528,49 +522,6 @@ function notifcations() {
             notifcationOption4: $("#ph").is(':checked'),
             notifcationOption5: $("#despensing").is(':checked'),
             notifcationOption6: $("#growth").is(':checked')
-        },
-        function(data, status){
-            console.log(data);
-            console.log(status);
-    });
-  });
-}
-
-function wifi() {
-  var heading = document.getElementById('settingsHeading');
-  heading.innerHTML = 'Wifi Network';
-  var content = document.getElementById('settingsContent');
-  content.innerHTML = `
-                      <h3>Current Information:</h3>
-                      <p id="name">SSID: Jon Doe</p>
-                      <hr>
-                      <h3>Wifi SSID and password</h3>
-                      <p>Please enter you new network SSID and password.</p>
-                      <div class="alert alert-warning" role="alert"><strong>Please Note:</strong> This is intended to update your network information. Upon clicking submit, your pi's network will attempt to change.</div>
-                      <form class="form" action="/" method="post">
-                        <div class="form-group">
-                          <label for="ssid">SSID</label>
-                          <input type="text" class="form-control" id="ssid" placeholder="SSID">
-                        </div>
-                        <div class="form-group">
-                          <label for="password">Password</label>
-                          <input type="password" class="form-control" id="password" placeholder="Password">
-                        </div>
-                        <button type="submit" class="btn btn-default main-color" id="save">Update Network Info</button>
-                      </form>
-                      `;
-
-  $.getJSON("/data/settings.json", function(data) {
-    var json = data;
-    $("#name").html(json.wifi.oldSSID);
-  });
-
-  $( "#save" ).click(function(e) {
-    e.preventDefault();
-    $.post("/api/settings/wifi",
-        {
-            ssid: $("#ssid").val(),
-            password: $("#password").val()
         },
         function(data, status){
             console.log(data);

@@ -130,17 +130,6 @@ app.post('/api/settings/notifcations', function(req, res) {
   });
 });
 
-app.post('/api/settings/wifi', function(req, res) {
-  console.log(req.body.ssid);
-  console.log(req.body.password);
-  var file = __dirname + '/data/settings.json';
-  jsonfile.readFile(file, function(err, obj) {
-    obj.wifi.newSSID = req.body.ssid;
-    obj.wifi.newPSK = req.body.password;
-    jsonfile.writeFile(file, obj);
-  });
-});
-
 app.post('/api/sprayer', function(req, res) {
   if (req.body.sprayer == "on") {
     var file = __dirname + '/data/settings.json';
@@ -184,6 +173,7 @@ app.post('/api/nutrents', function(req, res) {
   });
 });
 
+
 app.post('/api/ph', function(req, res) {
   console.log(req.body.ph);
 
@@ -212,7 +202,7 @@ app.listen(4000, function() {
 const SerialPort = require('serialport');
 const Readline = SerialPort.parsers.Readline;
 
-const pumps = new SerialPort('/dev/ttyUSB2'); //Change to match correct port
+const pumps = new SerialPort('/dev/arduino0'); //Change to match correct port
 const pumpsparser = new Readline();
 pumps.pipe(pumpsparser);
 
@@ -220,6 +210,7 @@ pumps.on('open', () => {
   console.log('Port Opened With Pumps');
   setInterval(pumpsProcess, 10000);
   console.log('Pumps Process Started');
+
 });
 
 pumps.on('close', () => {
@@ -229,20 +220,16 @@ pumps.on('close', () => {
 });
 
 //------Ec------//
-const ec = new SerialPort('/dev/ttyUSB1'); //Change to match correct port
+const ec = new SerialPort('/dev/arduino1'); //Change to match correct port
 const ecparser = new Readline();
 ec.pipe(ecparser);
 
 ec.on('open', () => {
   console.log('Port Opened With Ec Sensor');
-  setInterval(ecProcess, 10000);
-  console.log('Ec Process Started');
 });
 
 ec.on('close', () => {
   console.log('Port Closed With Ec Sensor');
-  clearInterval(ecProcess);
-  console.log('Error: Ec Process Ended! Reconnect and restart!');
 });
 
 var lastDay;
@@ -270,26 +257,27 @@ ecparser.on('data', function(data) {
 });
 
 //-----PH-----//
-const ph = new SerialPort('/dev/ttyUSB0'); //Change to match correct port
+const ph = new SerialPort('/dev/phSensor'); //Change to match correct port
 
 const phparser = ph.pipe(new Readline({ delimiter: '\r' }));
 
 ph.on('open', () => {
   console.log('Port Opened With ph Sensor');
-  setInterval(phProcess, 10000);
-  console.log('ph Process Started');
 });
 
 ph.on('close', () => {
   console.log('Port Closed With ph Sensor');
-  clearInterval(phProcess);
-  console.log('Error: ph Process Ended! Reconnect and restart!');
 });
 
 var lastDayph;
 
+var cooldown = 0;
+
 phparser.on('data', function(data) {
   console.log(parseFloat(data));
+  if(cooldown != 0) {
+    cooldown--;
+  }
 
   var d = new Date();
 
@@ -307,11 +295,23 @@ phparser.on('data', function(data) {
     });
    }
   }
+  var newFile = __dirname + '/data/settings.json';
+  jsonfile.readFile(newFile, function(err, obj) {
+    if (obj.phTarget > (parseFloat(data) + 1.5) || obj.phTarget < (parseFloat(data) - 1.5)) {
+      if(cooldown == 0) {
+        console.log("phAdded");
+        pumps.write("{\"pump\":\"PHUP\",\"sleep\":" + obj.phAdjustment * obj.nutrents.multiplyer + "}");
+        cooldown = 120;
+      }
+    }
+  });
 });
 //-----End Serial------//
 
 //------Begin Pumps------//
 var triggered = false;
+var toggle = false;
+var timeout = 0;
 function pumpsProcess() {
   var file = __dirname + '/data/settings.json';
   jsonfile.readFile(file, function(err, obj) {
@@ -320,13 +320,17 @@ function pumpsProcess() {
       pumps.write("{\"pump\":\"GROW\",\"sleep\":" + obj.nutrents.growAmount * obj.nutrents.multiplyer + "}");
 
       let sent1 = new Promise((resolve, reject) => {
-        pumpsparser.on('data', function() {
+          pumpsparser.on('data', function() {
           resolve("Success!");
         });
       });
       sent1.then((successMessage) => {
         console.log("OK");
-        pumps.write("{\"pump\":\"FLORA\",\"sleep\":" + obj.nutrents.floraAmount * obj.nutrents.multiplyer + "}");
+
+        function send1() {
+          pumps.write("{\"pump\":\"FLORA\",\"sleep\":" + obj.nutrents.floraAmount * obj.nutrents.multiplyer + "}");
+        }
+        setTimeout(send1, 1000);
 
         let sent2 = new Promise((resolve, reject) => {
           pumpsparser.on('data', function() {
@@ -335,27 +339,71 @@ function pumpsProcess() {
         });
         sent2.then((successMessage) => {
           console.log("OK");
-          pumps.write("{\"pump\":\"BLOOM\",\"sleep\":" + obj.nutrents.bloomAmount * obj.nutrents.multiplyer + "}");
+
+          function send2() {
+            pumps.write("{\"pump\":\"BLOOM\",\"sleep\":" + obj.nutrents.bloomAmount * obj.nutrents.multiplyer + "}");
+          }
+          setTimeout(send2, 1000);
+
         });
       });
     }
     if (obj.nutrents.day != getDay() || obj.nutrents.time != getHour()) {
       triggered = false;
     }
+
+    if (obj.sprayer.day == true) {
+      pumps.write("{\"pump\":\"MAIN\",\"sleep\":0}");
+    }
+
+    if (obj.sprayer.morning == true) {
+      var d = new Date();
+      if (d.getHours() >= 5 && d.getHours() <= 8 && toggle == false) {
+          pumps.write("{\"pump\":\"MAIN\",\"sleep\":0}");
+          toggle == true;
+      }
+      else {
+        toggle = false;
+        pumps.write("{\"pump\":\"MAIN\",\"sleep\":1000}"); //turns pump off
+      }
+    }
+
+    if (obj.sprayer.night == true) {
+      var d = new Date();
+      if (d.getHours() >= 17 && d.getHours() <= 20 && toggle == false) {
+          pumps.write("{\"pump\":\"MAIN\",\"sleep\":0}");
+          toggle == true;
+      }
+      else {
+        toggle = false;
+        pumps.write("{\"pump\":\"MAIN\",\"sleep\":1000}"); //turns pump off
+      }
+    }
+
+    timeout--;
+    if (obj.sprayer.night == false && obj.sprayer.morning == false && obj.sprayer.day == false && timeout == 0) {
+      setInterval(spray, obj.sprayer.sprayInterval);
+      timeout == 3600;
+    }
+    else {
+      clearInterval(spray)
+    }
+
   });
 }
 //------End Pumps------//
 
-//------Begin Ec------//
-function ecProcess() {
 
+//------Begin Sprayer------//
+
+function spray() {
+  var newFile = __dirname + '/data/settings.json';
+  jsonfile.readFile(newFile, function(err, obj) {
+    pumps.write("{\"pump\":\"MAIN\",\"sleep\":" + obj.sprayer.sprayTime + "}");
+  });
 }
-//------End ph------//
 
-function phProcess() {
-
-}
-//------End ph------//
+//------End Sprayer------//
 
 function getHour() {
   var d = new Date();
