@@ -149,29 +149,15 @@ app.post('/api/nutrents', function(req, res) {
   var file = __dirname + '/data/settings.json';
   jsonfile.readFile(file, function(err, obj) {
 
-    pumps.write("{\"pump\":\"GROW\",\"sleep\":" + req.body.grow * obj.nutrents.multiplyer + "}");
+    pumps.write("{\"GROW\":" + req.body.grow * obj.nutrents.multiplyer +
+    ", \"FLORA\":" + req.body.flora * obj.nutrents.multiplyer +
+    ", \"BLOOM\":" + req.body.bloom * obj.nutrents.multiplyer +
+    ", \"MAIN\":10" +
+    ", \"PH\":0}");
 
-    let sent1 = new Promise((resolve, reject) => {
-      pumpsparser.on('data', function() {
-        resolve("Success!");
-      });
-    });
-    sent1.then((successMessage) => {
-      console.log("OK");
-      pumps.write("{\"pump\":\"FLORA\",\"sleep\":" + req.body.flora * obj.nutrents.multiplyer + "}");
-
-      let sent2 = new Promise((resolve, reject) => {
-        pumpsparser.on('data', function() {
-          resolve("Success!");
-        });
-      });
-      sent2.then((successMessage) => {
-        console.log("OK");
-        pumps.write("{\"pump\":\"BLOOM\",\"sleep\":" + req.body.bloom * obj.nutrents.multiplyer + "}");
-      });
-    });
   });
 });
+
 
 
 app.post('/api/ph', function(req, res) {
@@ -179,7 +165,13 @@ app.post('/api/ph', function(req, res) {
 
   var file = __dirname + '/data/settings.json';
   jsonfile.readFile(file, function(err, obj) {
-    pumps.write("{\"pump\":\"PHUP\",\"sleep\":" + req.body.ph * obj.nutrents.multiplyer + "}");
+
+    pumps.write("{\"GROW\":0" +
+    ", \"FLORA\":0" +
+    ", \"BLOOM\":0" +
+    ", \"MAIN\":1" +
+    ", \"PH\":" + req.body.ph * obj.nutrents.multiplyer + "}");
+
   });
 });
 
@@ -217,6 +209,10 @@ pumps.on('close', () => {
   console.log('Port Closed With Pumps');
   clearInterval(pumpsProcess);
   console.log('Error: Pumps Process Ended! Reconnect and restart!');
+});
+
+pumpsparser.on('data', function(data) {
+  console.log(data);
 });
 
 //------Ec------//
@@ -300,7 +296,11 @@ phparser.on('data', function(data) {
     if (obj.phTarget > (parseFloat(data) + 1.5) || obj.phTarget < (parseFloat(data) - 1.5)) {
       if(cooldown == 0) {
         console.log("phAdded");
-        pumps.write("{\"pump\":\"PHUP\",\"sleep\":" + obj.phAdjustment * obj.nutrents.multiplyer + "}");
+        pumps.write("{\"GROW\":0" +
+        ", \"FLORA\":0" +
+        ", \"BLOOM\":0" +
+        ", \"MAIN\":1" +
+        ", \"PH\":" + obj.phAdjustment * obj.nutrents.multiplyer + "}");
         cooldown = 120;
       }
     }
@@ -317,66 +317,61 @@ function pumpsProcess() {
   jsonfile.readFile(file, function(err, obj) {
     if (obj.nutrents.day == getDay() && obj.nutrents.time == getHour() && triggered == false) {
       triggered = true;
-      pumps.write("{\"pump\":\"GROW\",\"sleep\":" + obj.nutrents.growAmount * obj.nutrents.multiplyer + "}");
-
-      let sent1 = new Promise((resolve, reject) => {
-          pumpsparser.on('data', function() {
-          resolve("Success!");
-        });
-      });
-      sent1.then((successMessage) => {
-        console.log("OK");
-
-        function send1() {
-          pumps.write("{\"pump\":\"FLORA\",\"sleep\":" + obj.nutrents.floraAmount * obj.nutrents.multiplyer + "}");
-        }
-        setTimeout(send1, 1000);
-
-        let sent2 = new Promise((resolve, reject) => {
-          pumpsparser.on('data', function() {
-            resolve("Success!");
-          });
-        });
-        sent2.then((successMessage) => {
-          console.log("OK");
-
-          function send2() {
-            pumps.write("{\"pump\":\"BLOOM\",\"sleep\":" + obj.nutrents.bloomAmount * obj.nutrents.multiplyer + "}");
-          }
-          setTimeout(send2, 1000);
-
-        });
-      });
+      pumps.write("{\"GROW\":" + req.body.grow * obj.nutrents.multiplyer +
+      ", \"FLORA\":" + req.body.flora * obj.nutrents.multiplyer +
+      ", \"BLOOM\":" + req.body.bloom * obj.nutrents.multiplyer +
+      ", \"MAIN\":1" +
+      ", \"PH\":0}");
     }
     if (obj.nutrents.day != getDay() || obj.nutrents.time != getHour()) {
       triggered = false;
     }
 
     if (obj.sprayer.day == true) {
-      pumps.write("{\"pump\":\"MAIN\",\"sleep\":0}");
+      pumps.write("{\"GROW\":0" +
+      ", \"FLORA\":0" +
+      ", \"BLOOM\":0" +
+      ", \"MAIN\":0" +
+      ", \"PH\":0}");
     }
 
     if (obj.sprayer.morning == true) {
       var d = new Date();
       if (d.getHours() >= 5 && d.getHours() <= 8 && toggle == false) {
-          pumps.write("{\"pump\":\"MAIN\",\"sleep\":0}");
+        pumps.write("{\"GROW\":0" +
+        ", \"FLORA\":0" +
+        ", \"BLOOM\":0" +
+        ", \"MAIN\":0" +
+        ", \"PH\":0}");
           toggle == true;
       }
       else {
         toggle = false;
-        pumps.write("{\"pump\":\"MAIN\",\"sleep\":1000}"); //turns pump off
+        pumps.write("{\"GROW\":0" +
+        ", \"FLORA\":0" +
+        ", \"BLOOM\":0" +
+        ", \"MAIN\":1" +
+        ", \"PH\":0}");
       }
     }
 
     if (obj.sprayer.night == true) {
       var d = new Date();
       if (d.getHours() >= 17 && d.getHours() <= 20 && toggle == false) {
-          pumps.write("{\"pump\":\"MAIN\",\"sleep\":0}");
+        pumps.write("{\"GROW\":0" +
+        ", \"FLORA\":0" +
+        ", \"BLOOM\":0" +
+        ", \"MAIN\":0" +
+        ", \"PH\":0}");
           toggle == true;
       }
       else {
         toggle = false;
-        pumps.write("{\"pump\":\"MAIN\",\"sleep\":1000}"); //turns pump off
+        pumps.write("{\"GROW\":0" +
+        ", \"FLORA\":0" +
+        ", \"BLOOM\":0" +
+        ", \"MAIN\":1" +
+        ", \"PH\":0}");
       }
     }
 
@@ -399,7 +394,11 @@ function pumpsProcess() {
 function spray() {
   var newFile = __dirname + '/data/settings.json';
   jsonfile.readFile(newFile, function(err, obj) {
-    pumps.write("{\"pump\":\"MAIN\",\"sleep\":" + obj.sprayer.sprayTime + "}");
+    pumps.write("{\"GROW\":0" +
+    ", \"FLORA\":0" +
+    ", \"BLOOM\":0" +
+    ", \"MAIN\":" + obj.sprayer.sprayTime +
+    ", \"PH\":0}");
   });
 }
 
