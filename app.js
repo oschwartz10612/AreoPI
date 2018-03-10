@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express'); //this is a work in progress; check back for future this is a test!
 const app = express();
 var jsonfile = require('jsonfile')
 var bodyParser = require('body-parser');
@@ -100,32 +100,6 @@ app.post('/api/settings/ph', function(req, res) {
   var file = __dirname + '/data/settings.json';
   jsonfile.readFile(file, function(err, obj) {
     obj.phTarget = parseInt(req.body.ph);
-    jsonfile.writeFile(file, obj);
-  });
-});
-
-app.post('/api/settings/notifcations', function(req, res) {
-  console.log("------------------");
-  console.log(req.body.notifcationOption1);
-  console.log(req.body.notifcationOption3);
-  console.log(req.body.notifcationOption4);
-  console.log(req.body.notifcationOption5);
-  console.log(req.body.notifcationOption6);
-  console.log(req.body.name);
-  console.log(req.body.email);
-  var file = __dirname + '/data/settings.json';
-  jsonfile.readFile(file, function(err, obj) {
-    obj.notifcations.notifcationOption1 = (req.body.notifcationOption1 === "true");
-    obj.notifcations.notifcationOption3 = (req.body.notifcationOption3 === "true");
-    obj.notifcations.notifcationOption4 = (req.body.notifcationOption4 === "true");
-    obj.notifcations.notifcationOption5 = (req.body.notifcationOption5 === "true");
-    obj.notifcations.notifcationOption6 = (req.body.notifcationOption6 === "true");
-    if(req.body.name != "") {
-      obj.notifcations.notificationName = req.body.name;
-    }
-    if(req.body.email != "") {
-      obj.notifcations.notificationEmail = req.body.email;
-    }
     jsonfile.writeFile(file, obj);
   });
 });
@@ -387,7 +361,6 @@ function pumpsProcess() {
   });
 }
 //------End Pumps------//
-
 
 //------Begin Sprayer------//
 
