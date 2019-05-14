@@ -159,7 +159,7 @@ app.get('/settings', function(req, res) {
 });
 
 app.listen(4000, function() {
-  console.log('Listening on port 4000!');
+  console.log('Listening on port 3000!');
 });
 //------End Website------//
 
@@ -244,7 +244,7 @@ var lastDayph;
 var cooldown = 0;
 
 phparser.on('data', function(data) {
-  console.log(parseFloat(data));
+  //console.log(parseFloat(data));
   if(cooldown != 0) {
     cooldown--;
   }

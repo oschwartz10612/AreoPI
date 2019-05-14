@@ -370,7 +370,6 @@ function viewWater() {
                           <div id="tank1" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <canvas id="myChart" width="300" height="150"></canvas>
-                        <a href="/settings" class="btn main-color" id="manageNotifcations"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Manage Notifcations</a>
                         `;
 
   $.getJSON("/data/data.json", function(data) {
