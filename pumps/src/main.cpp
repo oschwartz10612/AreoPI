@@ -14,6 +14,7 @@ int phSleep;
 int mainSleep;
 
 char cmd[70];
+StaticJsonBuffer<70> jsonBuffer;
 
 void setup() {
   pinMode(MAIN, OUTPUT);
@@ -43,7 +44,6 @@ void loop() {
 
     Serial.flush();
 
-    StaticJsonBuffer<70> jsonBuffer;
     JsonObject& root = jsonBuffer.parseObject(cmd);
     floraSleep = root["FLORA"];
     bloomSleep = root["BLOOM"];
