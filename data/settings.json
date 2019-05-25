@@ -1,1 +1,1 @@
-{"sprayer":{"morning":false,"night":false,"day":true,"sprayInterval":1,"sprayTime":50},"nutrents":{"floraAmount":100,"growAmount":100,"bloomAmount":100,"day":"Monday","time":"5:00 AM","multiplyer":100},"phTarget":7,"phAdjustment":10}
+{"sprayer":{"morning":false,"night":false,"day":false,"sprayInterval":1,"sprayTime":30},"nutrents":{"floraAmount":100,"growAmount":100,"bloomAmount":100,"day":"Monday","time":"5:00 AM","multiplyer":100},"phTarget":7,"phAdjustment":10}

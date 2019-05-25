@@ -14,7 +14,6 @@ int phSleep;
 int mainSleep;
 
 char cmd[70];
-StaticJsonBuffer<70> jsonBuffer;
 
 void setup() {
   pinMode(MAIN, OUTPUT);
@@ -42,9 +41,17 @@ void loop() {
     phSleep = 0;
     mainSleep = 0;
 
+DynamicJsonDocument root(200);
+  DeserializationError error = deserializeJson(root, cmd);
+
+  // Test if parsing succeeds.
+  if (error) {
+    Serial.print(F("deserializeJson() failed: "));
+    Serial.println(error.c_str());
+    return;
+  }
     Serial.flush();
 
-    JsonObject& root = jsonBuffer.parseObject(cmd);
     floraSleep = root["FLORA"];
     bloomSleep = root["BLOOM"];
     growSleep = root["GROW"];
@@ -58,9 +65,9 @@ void loop() {
       if (mainSleep != 0) {
         delay(mainSleep);
         digitalWrite(MAIN, HIGH);
+	delay(1000);
+	Serial.println("OK");
       }
-      delay(1000);
-      Serial.println("OK");
 
       //Flora
       if (floraSleep != 0) {

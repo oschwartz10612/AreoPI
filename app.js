@@ -158,7 +158,7 @@ app.get('/settings', function(req, res) {
   res.render('settings.html');
 });
 
-app.listen(4000, function() {
+app.listen(3000, function() {
   console.log('Listening on port 3000!');
 });
 //------End Website------//
