@@ -176,7 +176,6 @@ pumps.on('open', () => {
   console.log('Port Opened With Pumps');
   setInterval(pumpsProcess, 10000);
   console.log('Pumps Process Started');
-
 });
 
 pumps.on('close', () => {
