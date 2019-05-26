@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 //Main Process
 
-//api:
+//*********************API************************//
 app.post('/api/settings/timing', function(req, res) {
   console.log("----------------------");
   console.log(req.body.timingOption1);
@@ -44,6 +44,8 @@ app.post('/api/settings/timing', function(req, res) {
     }
     jsonfile.writeFile(file, obj);
   });
+  clearInterval(spray);
+  intervalToggle = false;
 });
 
 app.post('/api/settings/despensing', function(req, res) {
@@ -109,8 +111,7 @@ app.post('/api/sprayer', function(req, res) {
     var file = __dirname + '/data/settings.json';
     jsonfile.readFile(file, function(err, obj) {
       console.log("Turn on Sprayer");
-      console.log("{\"pump\":\"MAIN\",\"sleep\":" + obj.sprayer.sprayTime + "}");
-      pumps.write("{\"pump\":\"MAIN\",\"sleep\":" + obj.sprayer.sprayTime + "}");
+      pumps.write('{"MAIN":' + obj.sprayer.sprayTime * obj.sprayer.multiplyer + '}');
     });
   }
 });
@@ -126,13 +127,11 @@ app.post('/api/nutrents', function(req, res) {
     pumps.write("{\"GROW\":" + req.body.grow * obj.nutrents.multiplyer +
     ", \"FLORA\":" + req.body.flora * obj.nutrents.multiplyer +
     ", \"BLOOM\":" + req.body.bloom * obj.nutrents.multiplyer +
-    ", \"MAIN\":10" +
+    ", \"MAIN\":0" +
     ", \"PH\":0}");
 
   });
 });
-
-
 
 app.post('/api/ph', function(req, res) {
   console.log(req.body.ph);
@@ -143,7 +142,7 @@ app.post('/api/ph', function(req, res) {
     pumps.write("{\"GROW\":0" +
     ", \"FLORA\":0" +
     ", \"BLOOM\":0" +
-    ", \"MAIN\":1" +
+    ", \"MAIN\":0" +
     ", \"PH\":" + req.body.ph * obj.nutrents.multiplyer + "}");
 
   });
@@ -272,7 +271,7 @@ phparser.on('data', function(data) {
         pumps.write("{\"GROW\":0" +
         ", \"FLORA\":0" +
         ", \"BLOOM\":0" +
-        ", \"MAIN\":1" +
+        ", \"MAIN\":0" +
         ", \"PH\":" + obj.phAdjustment * obj.nutrents.multiplyer + "}");
         cooldown = 120;
       }
@@ -285,27 +284,34 @@ phparser.on('data', function(data) {
 var triggered = false;
 var toggle = false;
 var timeout = 0;
+var dayToggle = false;
+var intervalToggle = false;
 function pumpsProcess() {
   var file = __dirname + '/data/settings.json';
   jsonfile.readFile(file, function(err, obj) {
+
     if (obj.nutrents.day == getDay() && obj.nutrents.time == getHour() && triggered == false) {
       triggered = true;
       pumps.write("{\"GROW\":" + req.body.grow * obj.nutrents.multiplyer +
       ", \"FLORA\":" + req.body.flora * obj.nutrents.multiplyer +
       ", \"BLOOM\":" + req.body.bloom * obj.nutrents.multiplyer +
-      ", \"MAIN\":1" +
+      ", \"MAIN\":0" +
       ", \"PH\":0}");
     }
     if (obj.nutrents.day != getDay() || obj.nutrents.time != getHour()) {
       triggered = false;
     }
 
-    if (obj.sprayer.day == true) {
+    if (obj.sprayer.day == true && dayToggle == false) {
       pumps.write("{\"GROW\":0" +
       ", \"FLORA\":0" +
       ", \"BLOOM\":0" +
-      ", \"MAIN\":0" +
+      ", \"MAIN\":-1" +
       ", \"PH\":0}");
+      dayToggle = true;
+    }
+    else if(obj.sprayer.day == false) {
+      dayToggle = false;
     }
 
     if (obj.sprayer.morning == true) {
@@ -314,7 +320,7 @@ function pumpsProcess() {
         pumps.write("{\"GROW\":0" +
         ", \"FLORA\":0" +
         ", \"BLOOM\":0" +
-        ", \"MAIN\":0" +
+        ", \"MAIN\":-1" +
         ", \"PH\":0}");
           toggle == true;
       }
@@ -334,7 +340,7 @@ function pumpsProcess() {
         pumps.write("{\"GROW\":0" +
         ", \"FLORA\":0" +
         ", \"BLOOM\":0" +
-        ", \"MAIN\":0" +
+        ", \"MAIN\":-1" +
         ", \"PH\":0}");
           toggle == true;
       }
@@ -347,16 +353,15 @@ function pumpsProcess() {
         ", \"PH\":0}");
       }
     }
-
-    timeout--;
-    if (obj.sprayer.night == false && obj.sprayer.morning == false && obj.sprayer.day == false && timeout == 0) {
-      setInterval(spray, obj.sprayer.sprayInterval);
-      timeout == 3600;
+    
+    if (obj.sprayer.night == false && obj.sprayer.morning == false && obj.sprayer.day == false && intervalToggle == false) {
+      console.log("Sprayer process started");
+      setInterval(spray, obj.sprayer.sprayInterval * obj.sprayer.multiplyer);
+      intervalToggle = true;
     }
-    else {
-      clearInterval(spray)
+    else if(obj.sprayer.night == true || obj.sprayer.morning == true || obj.sprayer.day == true) {
+      intervalToggle = false;
     }
-
   });
 }
 //------End Pumps------//
@@ -366,10 +371,11 @@ function pumpsProcess() {
 function spray() {
   var newFile = __dirname + '/data/settings.json';
   jsonfile.readFile(newFile, function(err, obj) {
+    console.log("Spraying on interval");
     pumps.write("{\"GROW\":0" +
     ", \"FLORA\":0" +
     ", \"BLOOM\":0" +
-    ", \"MAIN\":" + obj.sprayer.sprayTime +
+    ", \"MAIN\":" + obj.sprayer.sprayTime * obj.sprayer.multiplyer +
     ", \"PH\":0}");
   });
 }

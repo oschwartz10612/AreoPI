@@ -1,4 +1,5 @@
 #include <ArduinoJson.h>
+#include <AsyncDelay.h>
 #include <Arduino.h>
 
 #define MAIN 13
@@ -7,13 +8,20 @@
 #define BLOOM 4
 #define PHUP 3
 
-int floraSleep;
-int bloomSleep;
-int growSleep;
-int phSleep;
-int mainSleep;
+int floraSleep = 0;
+int bloomSleep = 0;
+int growSleep = 0;
+int phSleep = 0;
+int mainSleep = 0;
+int mainPump = 0;
 
 char cmd[70];
+
+AsyncDelay mainTimer;
+AsyncDelay floraTimer;
+AsyncDelay bloomTimer;
+AsyncDelay growTimer;
+AsyncDelay phTimer;
 
 void setup() {
   pinMode(MAIN, OUTPUT);
@@ -32,14 +40,9 @@ void setup() {
 }
 
 void loop() {
+
   if(Serial.available() > 0) {
     Serial.readBytes(cmd, 70);
-
-    floraSleep = 0;
-    bloomSleep = 0;
-    growSleep = 0;
-    phSleep = 0;
-    mainSleep = 0;
 
     DynamicJsonDocument root(200);
     DeserializationError error = deserializeJson(root, cmd);
@@ -53,70 +56,94 @@ void loop() {
 
     Serial.flush();
 
-    floraSleep = root["FLORA"];
+    floraSleep = root["FLORA"]; 
     bloomSleep = root["BLOOM"];
     growSleep = root["GROW"];
     phSleep = root["PH"];
-    mainSleep = root["MAIN"];
+    mainPump = root["MAIN"];
+
+    if (mainPump != 0) { 
+      mainSleep = mainPump;
+    }
 
     Serial.println("DATA:");
     Serial.println(floraSleep);
     Serial.println(bloomSleep);
     Serial.println(growSleep);
     Serial.println(phSleep);
-    Serial.println(mainSleep);
+    Serial.println(mainPump);
 
     memset(cmd, 0, sizeof(cmd));
+
+    if(mainSleep > 0) mainTimer.start(mainSleep, AsyncDelay::MILLIS);
+    if(floraSleep > 0) floraTimer.start(floraSleep, AsyncDelay::MILLIS);
+    if(bloomSleep > 0) bloomTimer.start(bloomSleep, AsyncDelay::MILLIS);
+    if(growSleep > 0) growTimer.start(growSleep, AsyncDelay::MILLIS);
+    if(phSleep > 0) phTimer.start(phSleep, AsyncDelay::MILLIS);
   }
 
   //Main
-  digitalWrite(MAIN, LOW);
-  if (mainSleep != 0) {
-    delay(mainSleep);
-    digitalWrite(MAIN, HIGH);
-    delay(1000);
-    mainSleep = 0;
-    Serial.println("OK");
+  if (mainSleep == -1)
+  {
+    digitalWrite(MAIN, LOW);
+    mainSleep = -2;
+  }
+  
+  if (mainSleep > 0) {
+    digitalWrite(MAIN, LOW);
+    if (mainTimer.isExpired()) {
+      digitalWrite(MAIN, HIGH);
+      mainSleep = 0;
+      Serial.println("OK");
+    }
   }
 
   //Flora
   if (floraSleep != 0) {
     digitalWrite(FLORA, LOW);
-    delay(floraSleep);
-    digitalWrite(FLORA, HIGH);
-    delay(1000);
-    floraSleep = 0;
-    Serial.println("OK");
+    
+    if (floraTimer.isExpired()) {
+      digitalWrite(FLORA, HIGH);
+      floraSleep = 0;
+      Serial.println("OK");
+    }
   }
+
 
   //Bloom
   if (bloomSleep != 0) {
     digitalWrite(BLOOM, LOW);
-    delay(bloomSleep);
-    digitalWrite(BLOOM, HIGH);
-    delay(1000);
-    bloomSleep = 0;
-    Serial.println("OK");
+  
+    if (bloomTimer.isExpired()) {
+      digitalWrite(BLOOM, HIGH);
+      bloomSleep = 0;
+      Serial.println("OK");
+    }
   }
+
 
   //Grow
   if (growSleep != 0) {
     digitalWrite(GROW, LOW);
-    delay(growSleep);
-    digitalWrite(GROW, HIGH);
-    delay(1000);
-    growSleep = 0;
-    Serial.println("OK");
+
+    if (growTimer.isExpired()) {
+      digitalWrite(GROW, HIGH);
+      growSleep = 0;
+      Serial.println("OK");
+    }
   }
+
 
   //PH
   if (phSleep != 0) {
     digitalWrite(PHUP, LOW);
-    delay(phSleep);
-    digitalWrite(PHUP, HIGH);
-    delay(1000);
-    phSleep = 0;
-    Serial.println("OK");
+
+    if (phTimer.isExpired()) {
+      digitalWrite(PHUP, HIGH);
+      phSleep = 0;
+      Serial.println("OK");
+    }
   }
+
 }
 

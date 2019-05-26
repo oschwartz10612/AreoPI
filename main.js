@@ -415,7 +415,7 @@ function timing() {
   var content = document.getElementById('settingsContent');
   content.innerHTML = `
                       <h3>Current Information:</h3>
-                      <p id="currentInfo">Spray every <strong id="currentMinutes">5</strong> minutes for <strong id="currentTime">10</strong> secounds</p>
+                      <p id="currentInfo">Spray every <strong id="currentMinutes">5</strong> secounds for <strong id="currentTime">10</strong> secounds</p>
                       <hr>
                       <h3>Options:</h3>
                       <div class="alert alert-info" role="alert"><strong>Info:</strong> For more information about spraying times, please see this great article: <a target="_blank" href="http://aeroponicsdiy.com/aeroponics-misting-frequency-for-root-growth/">Aeroponics Misting Frequency</a></div>
