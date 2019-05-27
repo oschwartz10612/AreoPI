@@ -12,10 +12,10 @@ int floraSleep = 0;
 int bloomSleep = 0;
 int growSleep = 0;
 int phSleep = 0;
-int mainSleep = 0;
-int mainPump = 0;
+long mainSleep = 0;
+long mainPump = 0;
 
-char cmd[70];
+char cmd[200];
 
 AsyncDelay mainTimer;
 AsyncDelay floraTimer;
@@ -42,7 +42,8 @@ void setup() {
 void loop() {
 
   if(Serial.available() > 0) {
-    Serial.readBytes(cmd, 70);
+    Serial.readBytes(cmd, 200);
+    Serial.println(cmd);
 
     DynamicJsonDocument root(200);
     DeserializationError error = deserializeJson(root, cmd);
@@ -53,8 +54,6 @@ void loop() {
       Serial.println(error.c_str());
       return;
     }
-
-    Serial.flush();
 
     floraSleep = root["FLORA"]; 
     bloomSleep = root["BLOOM"];
@@ -74,6 +73,7 @@ void loop() {
     Serial.println(mainPump);
 
     memset(cmd, 0, sizeof(cmd));
+    Serial.flush();
 
     if(mainSleep > 0) mainTimer.start(mainSleep, AsyncDelay::MILLIS);
     if(floraSleep > 0) floraTimer.start(floraSleep, AsyncDelay::MILLIS);
