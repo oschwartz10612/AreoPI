@@ -96,3 +96,134 @@ DATA:
 <Buffer 2e 34 34 31 0d>
 <Buffer 37 2e 34 34 31 0d>
 {"rc":1048550.00,"ec":0.00,"ppm":0,"temperature":30.75,"cm":41,"in":16}
+Listening on port 3000!
+Port Opened With Pumps
+Pumps Process Started
+(node:538) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): Error: Error Resource temporarily unavailable Cannot lock port
+(node:538) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+Port Opened With ph Sensor
+<Buffer 00 00>
+<Buffer 37 2e 34 32 35>
+NaN
+<Buffer 0d>
+<Buffer 37 2e 34 32>
+7.424
+<Buffer 34 0d>
+<Buffer 37 2e>
+7.424
+<Buffer 34 32 34 0d>
+7.424
+<Buffer 37 2e 34 32 34 0d>
+7.425
+<Buffer 37 2e 34 32 35 0d>
+7.425
+<Buffer 37 2e 34 32 35 0d>
+7.425
+<Buffer 37 2e 34 32 35 0d>
+7.424
+<Buffer 37 2e 34 32 34 0d>
+7.424
+<Buffer 37 2e 34 32 34 0d>
+<Buffer 37 2e 34 32 33>
+7.423
+<Buffer 0d>
+<Buffer 37 2e 34 32>
+7.423
+<Buffer 33 0d>
+{"GROW":0, "FLORA":0, "BLOOM":0, "MAIN":-1, "PH":0}
+DATA:
+0
+0
+0
+0
+-1
+<Buffer 37 2e>
+7.424
+<Buffer 34 32 34 0d>
+<Buffer 37>
+7.424
+<Buffer 2e 34 32 34 0d>
+7.425
+<Buffer 37 2e 34 32 35 0d>
+7.426
+<Buffer 37 2e 34 32 36 0d>
+7.426
+<Buffer 37 2e 34 32 36 0d>
+7.427
+<Buffer 37 2e 34 32 37 0d>
+7.426
+<Buffer 37 2e 34 32 36 0d>
+7.425
+<Buffer 37 2e 34 32 35 0d>
+<Buffer 37 2e 34>
+7.424
+<Buffer 32 34 0d>
+<Buffer 37>
+7.425
+<Buffer 2e 34 32 35 0d>
+7.425
+<Buffer 37 2e 34 32 35 0d>
+7.424
+<Buffer 37 2e 34 32 34 0d>
+7.423
+<Buffer 37 2e 34 32 33 0d>
+7.424
+<Buffer 37 2e 34 32 34 0d>
+7.424
+<Buffer 37 2e 34 32 34 0d>
+7.424
+<Buffer 37 2e 34 32 34 0d>
+<Buffer 37 2e 34 32 34>
+7.424
+<Buffer 0d>
+<Buffer 37 2e 34>
+7.424
+<Buffer 32 34 0d>
+<Buffer 37>
+7.424
+<Buffer 2e 34 32 34 0d>
+7.423
+<Buffer 37 2e 34 32 33 0d>
+7.423
+<Buffer 37 2e 34 32 33 0d>
+7.424
+<Buffer 37 2e 34 32 34 0d>
+7.425
+<Buffer 37 2e 34 32 35 0d>
+7.425
+<Buffer 37 2e 34 32 35 0d>
+7.425
+<Buffer 37 2e 34 32 35 0d>
+<Buffer 37 2e 34 32>
+7.425
+<Buffer 35 0d>
+<Buffer 37 2e>
+7.426
+<Buffer 34 32 36 0d>
+7.426
+<Buffer 37 2e 34 32 36 0d>
+7.426
+<Buffer 37 2e 34 32 36 0d>
+7.426
+<Buffer 37 2e 34 32 36 0d>
+7.426
+<Buffer 37 2e 34 32 36 0d>
+7.426
+<Buffer 37 2e 34 32 36 0d>
+7.426
+<Buffer 37 2e 34 32 36 0d>
+7.427
+<Buffer 37 2e 34 32 37 0d>
+<Buffer 37 2e 34 32 37>
+7.427
+<Buffer 0d>
+<Buffer 37 2e 34>
+7.426
+<Buffer 32 36 0d>
+<Buffer 37 2e>
+7.426
+<Buffer 34 32 36 0d>
+7.426
+<Buffer 37 2e 34 32 36 0d>
+7.426
+<Buffer 37 2e 34 32 36 0d>

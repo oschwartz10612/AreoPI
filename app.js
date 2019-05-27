@@ -237,10 +237,6 @@ ph.on('close', () => {
   console.log('Port Closed With ph Sensor');
 });
 
-ph.on('data', function(data) {
-  console.log(data);
-});
-
 var lastDayph;
 
 var cooldown = 0;
