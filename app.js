@@ -246,7 +246,7 @@ var lastDayph;
 var cooldown = 0;
 
 phparser.on('data', function(data) {
-  //console.log(parseFloat(data));
+  console.log(parseFloat(data));
   if(cooldown != 0) {
     cooldown--;
   }

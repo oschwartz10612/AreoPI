@@ -1,0 +1,98 @@
+Listening on port 3000!
+Port Opened With Pumps
+Pumps Process Started
+Port Opened With Ec Sensor
+Port Opened With ph Sensor
+<Buffer 00 0d>
+<Buffer 37 2e 34 34 31 0d>
+<Buffer 37 2e 34 34 31 0d>
+<Buffer 37 2e 34 34 32 0d>
+{"rc":1048550.00,"ec":0.00,"ppm":0,"temperature":30.75,"cm":41,"in":16}
+<Buffer 37 2e 34 34 33 0d>
+<Buffer 37 2e 34 34 33 0d>
+<Buffer 37 2e 34 34 32>
+<Buffer 0d>
+<Buffer 37 2e 34 34>
+<Buffer 33 0d>
+<Buffer 37 2e 34>
+<Buffer 34 32 0d>
+<Buffer 37>
+<Buffer 2e 34 34 33 0d>
+{"rc":1048550.00,"ec":0.00,"ppm":0,"temperature":30.75,"cm":40,"in":15}
+<Buffer 37 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 33 0d>
+{"GROW":0, "FLORA":0, "BLOOM":0, "MAIN":-1, "PH":0}
+DATA:
+0
+0
+0
+0
+-1
+<Buffer 37 2e 34 34 33 0d>
+<Buffer 37 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 32 0d>
+{"rc":1048550.00,"ec":0.00,"ppm":0,"temperature":30.75,"cm":40,"in":15}
+<Buffer 37 2e 34 34 32>
+<Buffer 0d>
+<Buffer 37 2e 34 34>
+<Buffer 32 0d>
+<Buffer 37 2e>
+<Buffer 34 34 32 0d>
+<Buffer 37 2e 34 34 33 0d>
+<Buffer 37 2e 34 34 33 0d>
+<Buffer 37 2e 34 34 34 0d>
+{"rc":1048550.00,"ec":0.00,"ppm":0,"temperature":30.75,"cm":40,"in":15}
+<Buffer 37 2e 34 34 33 0d>
+<Buffer 37 2e 34 34 34 0d>
+<Buffer 37 2e 34 34 34 0d>
+<Buffer 37 2e 34 34 33 0d>
+<Buffer 37 2e 34 34 32>
+<Buffer 0d>
+<Buffer 37 2e 34>
+<Buffer 34 32 0d>
+{"rc":1048550.00,"ec":0.00,"ppm":0,"temperature":30.75,"cm":41,"in":16}
+<Buffer 37>
+<Buffer 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 32 0d>
+{"rc":1048550.00,"ec":0.00,"ppm":0,"temperature":30.75,"cm":41,"in":16}
+<Buffer 37 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 33 0d>
+<Buffer 37 2e 34>
+<Buffer 34 33 0d>
+<Buffer 37 2e>
+<Buffer 34 34 32 0d>
+<Buffer 37>
+<Buffer 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 32 0d>
+{"rc":1048550.00,"ec":0.00,"ppm":0,"temperature":30.75,"cm":41,"in":16}
+<Buffer 37 2e 34 34 33 0d>
+<Buffer 37 2e 34 34 33 0d>
+<Buffer 37 2e 34 34 33 0d>
+<Buffer 37 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 31 0d>
+<Buffer 37 2e 34 34>
+<Buffer 31 0d>
+{"rc":1048550.00,"ec":0.00,"ppm":0,"temperature":30.75,"cm":41,"in":16}
+<Buffer 37 2e 34>
+<Buffer 34 31 0d>
+<Buffer 37>
+<Buffer 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 31 0d>
+<Buffer 37 2e 34 34 31 0d>
+<Buffer 37 2e 34 34 32 0d>
+{"rc":1048550.00,"ec":0.00,"ppm":0,"temperature":30.75,"cm":41,"in":16}
+<Buffer 37 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 32 0d>
+<Buffer 37 2e 34 34 31>
+<Buffer 0d>
+<Buffer 37 2e 34 34>
+<Buffer 31 0d>
+<Buffer 37>
+<Buffer 2e 34 34 31 0d>
+<Buffer 37 2e 34 34 31 0d>
+{"rc":1048550.00,"ec":0.00,"ppm":0,"temperature":30.75,"cm":41,"in":16}
