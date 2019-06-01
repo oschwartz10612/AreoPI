@@ -17,6 +17,7 @@
     "jquery": "^3.2.1",
     "jsonfile": "^3.0.1",
     "nodemon": "^1.19.1",
-    "serialport": "^6.0.4"
+    "serialport": "^6.0.4",
+    "socket.io": "^2.2.0"
   }
 }

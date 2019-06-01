@@ -1,5 +1,8 @@
 const express = require('express'); //this is a work in progress; check back for future this is a test!
-const app = express();
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
 var jsonfile = require('jsonfile')
 var bodyParser = require('body-parser');
 
@@ -29,6 +32,8 @@ app.post('/api/settings/timing', function(req, res) {
   console.log(req.body.timingOption2);
   console.log(req.body.timingOption4);
   console.log(req.body.timingOption5);
+  console.log(req.body.timingOption6);
+  console.log(req.body.timingOption7);
   console.log(req.body.interval);
   console.log(req.body.secounds);
   var file = __dirname + '/data/settings.json';
@@ -36,6 +41,8 @@ app.post('/api/settings/timing', function(req, res) {
     obj.sprayer.morning = (req.body.timingOption1 === "true");
     obj.sprayer.night = (req.body.timingOption2 === "true");
     obj.sprayer.day = (req.body.timingOption4 === "true");
+    obj.sprayer.off = (req.body.timingOption6 === "true");
+    obj.sprayer.alternate = (req.body.timingOption7 === "true");
     if (req.body.secounds > 0) {
       obj.sprayer.sprayTime = parseInt(req.body.secounds);
     }
@@ -157,9 +164,12 @@ app.get('/settings', function(req, res) {
   res.render('settings.html');
 });
 
-app.listen(3000, function() {
-  console.log('Listening on port 3000!');
+app.get('/console', function(req, res) {
+  res.render('console.html');
 });
+
+
+server.listen(3000);
 //------End Website------//
 
 //------Serial------//
@@ -202,15 +212,16 @@ ec.on('close', () => {
 
 var lastDay;
 ecparser.on('data', function(data) {
-  console.log(data);
+  //console.log(data);
   var ecData = JSON.parse(data);
+
+  io.emit("sensors", {data: data});
 
   var d = new Date();
 
-  if (lastDay != d.getDay()) {
+  if (lastDay != d.getDay() && d.getHours() == 12) {
     var file = __dirname + '/data/data.json';
     jsonfile.readFile(file, function(err, obj) {
-
 
       obj.ec[d.getDay()] = parseFloat(ecData.ec);
       obj.tempatures[d.getDay()] = parseFloat(ecData.temperature); //going to have to multiply below by the amount of space we have
@@ -242,14 +253,16 @@ var lastDayph;
 var cooldown = 0;
 
 phparser.on('data', function(data) {
-  console.log(parseFloat(data));
+  //console.log(parseFloat(data));
+  io.emit("sensors", {data: "{\"ph\":" + parseFloat(data) + "}"});
+
   if(cooldown != 0) {
     cooldown--;
   }
 
   var d = new Date();
 
-  if (lastDayph != d.getDay()) {
+  if (lastDayph != d.getDay() && d.getHours() == 12) {
     if (parseFloat(data) > 0) {
       var file = __dirname + '/data/data.json';
       jsonfile.readFile(file, function(err, obj) {
@@ -283,24 +296,24 @@ phparser.on('data', function(data) {
 //------Begin Pumps------//
 var triggered = false;
 var toggle = false;
-var timeout = 0;
 var dayToggle = false;
+var offToggle = false;
 var intervalToggle = false;
 function pumpsProcess() {
   var file = __dirname + '/data/settings.json';
   jsonfile.readFile(file, function(err, obj) {
 
-    if (obj.nutrents.day == getDay() && obj.nutrents.time == getHour() && triggered == false) {
-      triggered = true;
-      pumps.write("{\"GROW\":" + req.body.grow * obj.nutrents.multiplyer +
-      ", \"FLORA\":" + req.body.flora * obj.nutrents.multiplyer +
-      ", \"BLOOM\":" + req.body.bloom * obj.nutrents.multiplyer +
-      ", \"MAIN\":0" +
-      ", \"PH\":0}");
-    }
-    if (obj.nutrents.day != getDay() || obj.nutrents.time != getHour()) {
-      triggered = false;
-    }
+    // if (obj.nutrents.day == getDay() && obj.nutrents.time == getHour() && triggered == false) {
+    //   triggered = true;
+    //   pumps.write("{\"GROW\":" + req.body.grow * obj.nutrents.multiplyer +
+    //   ", \"FLORA\":" + req.body.flora * obj.nutrents.multiplyer +
+    //   ", \"BLOOM\":" + req.body.bloom * obj.nutrents.multiplyer +
+    //   ", \"MAIN\":0" +
+    //   ", \"PH\":0}");
+    // }
+    // if (obj.nutrents.day != getDay() || obj.nutrents.time != getHour()) {
+    //   triggered = false;
+    // }
 
     if (obj.sprayer.day == true && dayToggle == false) {
       pumps.write("{\"GROW\":0" +
@@ -314,6 +327,18 @@ function pumpsProcess() {
       dayToggle = false;
     }
 
+    if (obj.sprayer.off == true && offToggle == false) {
+      pumps.write("{\"GROW\":0" +
+      ", \"FLORA\":0" +
+      ", \"BLOOM\":0" +
+      ", \"MAIN\":1" +
+      ", \"PH\":0}");
+      offToggle = true;
+    }
+    else if(obj.sprayer.off == false) {
+      offToggle = false;
+    }
+
     if (obj.sprayer.morning == true) {
       var d = new Date();
       if (d.getHours() >= 5 && d.getHours() <= 8 && toggle == false) {
@@ -322,9 +347,29 @@ function pumpsProcess() {
         ", \"BLOOM\":0" +
         ", \"MAIN\":-1" +
         ", \"PH\":0}");
-          toggle == true;
+          toggle = true;
       }
       else {
+        toggle = false;
+        pumps.write("{\"GROW\":0" +
+        ", \"FLORA\":0" +
+        ", \"BLOOM\":0" +
+        ", \"MAIN\":1" +
+        ", \"PH\":0}");
+      }
+    }
+
+    if (obj.sprayer.alternate == true) {
+      var d = new Date();
+      if (isEven(d.getHours()) == true && toggle == false) {
+        pumps.write("{\"GROW\":0" +
+        ", \"FLORA\":0" +
+        ", \"BLOOM\":0" +
+        ", \"MAIN\":-1" +
+        ", \"PH\":0}");
+        toggle = true;
+      }
+      else if(isEven(d.getHours()) == false && toggle == true) {
         toggle = false;
         pumps.write("{\"GROW\":0" +
         ", \"FLORA\":0" +
@@ -342,7 +387,7 @@ function pumpsProcess() {
         ", \"BLOOM\":0" +
         ", \"MAIN\":-1" +
         ", \"PH\":0}");
-          toggle == true;
+          toggle = true;
       }
       else {
         toggle = false;
@@ -354,7 +399,7 @@ function pumpsProcess() {
       }
     }
     
-    if (obj.sprayer.night == false && obj.sprayer.morning == false && obj.sprayer.day == false && intervalToggle == false) {
+    if (obj.sprayer.night == false && obj.sprayer.morning == false && obj.sprayer.day == false && obj.sprayer.off == false && obj.sprayer.alternate == false && intervalToggle == false) {
       console.log("Sprayer process started");
       setInterval(spray, obj.sprayer.sprayInterval * obj.sprayer.multiplyer);
       intervalToggle = true;
@@ -424,4 +469,8 @@ function getDay(day) {
   weekday[5] = "Friday";
   weekday[6] = "Saturday";
   return weekday[d.getDay()];
+}
+
+function isEven(n) {
+  return n == parseFloat(n)? !(n%2) : void 0;
 }

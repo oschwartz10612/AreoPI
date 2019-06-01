@@ -460,6 +460,18 @@ function timing() {
                           Every five minutes for 30 secounds
                         </label>
                       </div>
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs6" value="option6">
+                          Off
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="optionscheckboxs" id="optionscheckboxs7" value="option7">
+                          Alternate hours
+                        </label>
+                      </div>
                       <button type="button" name="button" class="btn main-color" id="save">Save</button>
                       `;
 
@@ -481,6 +493,14 @@ function timing() {
       $("#currentInfo").html("Spray all day");
       $("#optionscheckboxs4").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs4 value="option1" checked>');
     }
+    if (json.sprayer.off) {
+      $("#currentInfo").html("Sprayer off");
+      $("#optionscheckboxs6").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs6 value="option1" checked>');
+    }
+    if (json.sprayer.alternate) {
+      $("#currentInfo").html("Sprayer alternating hours");
+      $("#optionscheckboxs7").wrap('<input type="checkbox" name="optionscheckboxs" id="optionscheckboxs7 value="option1" checked>');
+    }
   });
 
   $( "#save" ).click(function() {
@@ -491,6 +511,8 @@ function timing() {
             timingOption3: $("#optionscheckboxs3").is(':checked'),
             timingOption4: $("#optionscheckboxs4").is(':checked'),
             timingOption5: $("#optionscheckboxs5").is(':checked'),
+            timingOption6: $("#optionscheckboxs6").is(':checked'),
+            timingOption7: $("#optionscheckboxs7").is(':checked'),
             secounds: $("#secounds").val(),
             interval: $("#interval").val()
         },
